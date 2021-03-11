@@ -1,0 +1,45 @@
+  <script src="../../assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/vendor/js-cookie/js.cookie.js"></script>
+  <script src="../../assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+  <script src="../../assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+  <!-- Optional JS -->
+  <script src="../../assets/vendor/chart.js/dist/Chart.min.js"></script>
+  <script src="../../assets/vendor/chart.js/dist/Chart.extension.js"></script>
+  <!-- Argon JS -->
+  <script src="../../assets/js/argon.js?v=1.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+<script>
+  
+$(document).ready(()=>{
+  $('#validate').validate({
+    rules:{
+product_name:{
+  required:true
+},
+product_price:{
+  required:true
+},
+product_category:{
+  required:true
+},
+product_description:{
+  required:true
+},
+Image:{
+  required:true
+}
+    }
+  })
+})
+</script>
+ <script>
+        $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+      </script>
+
+</body>
+
+<!-- Mirrored from preview.colorlib.com/theme/persuit/home-carousel.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 22 Feb 2021 07:24:02 GMT -->
+</html>

@@ -1,0 +1,38 @@
+<section class="login_area p_100">
+<div class="container">
+<div class="login_inner">
+<div class="row">
+<div class="col-lg-8">
+<div class="login_title">
+<h2>create account</h2>
+</div>
+<form action="/signup" method="POST" id="validate" class="login_form row">
+<div class="col-lg-6 form-group">
+<input class="form-control" name="Name" type="text" placeholder="Name">
+</div><div class="col-lg-6 form-group">
+{{#if exist}}
+<p style="color: red;">The Email is already taken</p>
+{{/if}}
+<input class="form-control" name="Email" type="email" placeholder="Email">
+</div>
+<div class="col-lg-6 form-group">
+<input class="form-control" name="Username" type="text" placeholder="User Name">
+</div>
+<div class="col-lg-6 form-group">
+<input class="form-control" name="Phone" type="text" placeholder="Phone">
+</div>
+<div class="col-lg-6 form-group">
+<input class="form-control" name="Password" type="password" placeholder="Password">
+</div>
+<a href="/login">
+Already have an account ?
+</a>
+<div class="col-lg-6 form-group">
+<button type="submit" value="submit" class="btn subs_btn form-control">register now</button>
+</div>
+ </form>
+</div>
+</div>
+</div>
+</div>
+</section>
