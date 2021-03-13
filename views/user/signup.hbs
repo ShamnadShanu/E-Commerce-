@@ -6,29 +6,28 @@
 <div class="login_title">
 <h2>create account</h2>
 </div>
+
 <form action="/signup" method="POST" id="validate" class="login_form row">
-<div class="col-lg-6 form-group">
+<div class="col-lg-12 form-group">
 <input class="form-control" name="Name" type="text" placeholder="Name">
-</div><div class="col-lg-6 form-group">
+</div>
+<div class="col-lg-12 form-group">
 {{#if exist}}
 <p style="color: red;">The Email is already taken</p>
 {{/if}}
-<input class="form-control" name="Email" type="email" placeholder="Email">
+<input class="form-control" name="Email"  placeholder="Email">
 </div>
-<div class="col-lg-6 form-group">
-<input class="form-control" name="Username" type="text" placeholder="User Name">
+<div class="col-lg-12 form-group">
+<input class="form-control" name="Phone" type="number" placeholder="Phone">
 </div>
-<div class="col-lg-6 form-group">
-<input class="form-control" name="Phone" type="text" placeholder="Phone">
-</div>
-<div class="col-lg-6 form-group">
-<input class="form-control" name="Password" type="password" placeholder="Password">
+<div class="col-lg-12 form-group">
+<input class="form-control" name="Password" type="password" placeholder="Password" >
 </div>
 <a href="/login">
 Already have an account ?
 </a>
-<div class="col-lg-6 form-group">
-<button type="submit" value="submit" class="btn subs_btn form-control">register now</button>
+<div class="col-lg-12 form-group">
+<button type="submit" value="submit" class="btn update_btn form-control">Register Now</button>
 </div>
  </form>
 </div>

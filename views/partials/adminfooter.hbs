@@ -7,10 +7,30 @@
   <script src="../../assets/vendor/chart.js/dist/Chart.extension.js"></script>
   <!-- Argon JS -->
   <script src="../../assets/js/argon.js?v=1.2.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
 <script>
-  
+
+
+</script>
+<script>
+$(document).ready(()=>{
+  $('#login').validate({
+    rules:{
+Email:{
+  required:true,
+  email:true
+},
+Password:{
+  required:true,
+  minlength: 4
+}
+
+
+    }
+  })
+})
+
 $(document).ready(()=>{
   $('#validate').validate({
     rules:{
@@ -28,16 +48,74 @@ product_description:{
 },
 Image:{
   required:true
+},
+Email:{
+  required:true,
+  email:true
+},
+Password:{
+  required:true,
+  minlength: 4
 }
+    },
+    messages :{
+product_name: "Select the field"
+
+    }
+  
     }
   })
 })
+</script>
+<script>
+
 </script>
  <script>
         $(document).ready( function () {
     $('#myTable').DataTable();
 } );
       </script>
+       <script>
+        $(document).ready( function () {
+    $('#myTabl').DataTable();
+} );
+      </script>
+      <script>
+  var subcategory={
+            {{#each Category}}
+            
+          {{this.product_category}}:{{this.sub_category}}
+   
+       {{/each}}
+  }
+  function makeSubmenu(value) {
+            if (value.length == 0) document.getElementById("categorySelect").innerHTML = "<option></option>";
+            else {
+                var citiesOptions = "";
+                for (categoryId in subcategory[value]) {
+                    citiesOptions += "<option>" + subcategory[value][categoryId] + "</option>";
+                }
+                document.getElementById("categorySelect").innerHTML = citiesOptions;
+            }
+        }
+
+        function displaySelected() {
+            var country = document.getElementById("category").value;
+            var city = document.getElementById("categorySelect").value;
+            alert(country + "\n" + city);
+        }
+
+        function resetSelection() {
+            document.getElementById("category").selectedIndex = 0;
+            document.getElementById("categorySelect").selectedIndex = 0;
+        }
+</script>
+<script>
+    function imageview(event){
+        console.log("hjbjhb")
+        document.getElementById('Imageview').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>
 
 </body>
 

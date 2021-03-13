@@ -20,13 +20,25 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="product_category">PRODUCT CATEGORY</label>
   <div class="col-md-4">
-    <select id="product_categorie"  name="product_category" class="form-control">
-  <option value="">SELECT</option>
-  <option value="MEN">MEN</option>
-  <option value="WOMEN">WOMEN</option>
-  <option value="KIDS">KIDS</option>
-  <option value="ACCESORIES">ACCESORIES</option>
+    <select id="category"  size="0" onchange="makeSubmenu(this.value)" name="product_category" class="form-control">
+  <option value="" disabled selected>SELECT</option>
+  {{#each categories}} --}}
+  <option value="{{this.product_category}}">{{this.product_category}}</option>
+  {{!-- <option value="MEN">MEN</option>
+    <option value="WOME">WOMEN</option>
+
+  <option value="ACCESSORIES">ACCESSORIES</option> --}}
+
+
+  {{/each}}
     </select>
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="category">SUB CATEGORY</label>
+  <div class="col-md-4">
+     <select  name="sub_category" id="categorySelect" size="0"  class="form-control"></select>
+    <option value=""></option>
   </div>
 </div>
 
@@ -68,7 +80,10 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">main_image</label>
   <div class="col-md-4">
-    <input id="filebutton" name="Image"  class="input-file" type="file">
+      <img src="../../productImages/{{product._id}}.jpg" id="Imageview" alt="no image " style="width: 100px; hight:auto;" >
+        <br>
+        <br>
+    <input id="filebutton" name="Image" onchange="imageview(event)" class="input-file" type="file">
   </div>
 </div>
 <!-- File Button --> 

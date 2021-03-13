@@ -28,18 +28,24 @@ return new Promise(async(resolve,reject)=>{
   let user= await db.get().collection(collections.USER_COLLECTION).findOne({Email:Data.Email})
   console.log(user);
   if(user){
-      bcrypt.compare(Data.Password,user.Password).then((status)=>{
-          if(status){
-              console.log('login success');
-            response.user=user
-            response.status=true
-            resolve(response)
-          }else{
-      console.log('login failed');
-      resolve({status:false})
-   }
-      })
-  }else{
+      console.log(user.status);
+      if(user.status){
+        resolve({status:false})
+    }else{
+        bcrypt.compare(Data.Password,user.Password).then((status)=>{
+            if(status){
+                console.log('login success');
+              response.user=user
+              response.status=true
+              resolve(response)
+            }else{
+        console.log('login failed');
+        resolve({status:false})
+     }
+        })
+        }
+      }
+     else{
 console.log('user invalid');
 resolve({status:false})  }
 })
@@ -56,6 +62,20 @@ return new Promise((resolve,reject)=>{
         resolve()
     })
 })
-}
+},
+blockUser:(user)=>{
+return new Promise(async(resolve,reject)=>{
+        db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(user)},{$set:{status:true}}).then(()=>{
+            resolve()
+        })
+})
+},
+unblockUser:(user)=>{
+    return new Promise(async(resolve,reject)=>{
+            db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(user)},{$set:{status:false}}).then(()=>{
+                resolve()
+            })
+    })
+    }
 
 }

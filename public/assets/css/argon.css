@@ -16,6 +16,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+label.error {
+    color: #f50f0b;
+}
 :root
 {
     --blue: #5e72e4;

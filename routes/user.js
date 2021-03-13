@@ -7,12 +7,21 @@ var userHelpers=require('../helpers/userHelpers')
 /* GET home page. */
 router.get('/', function(req, res, next) {
   producthelpers.getAllproducts().then((products)=>{
-    console.log(products);
     res.render('user/home',{user:req.session.userLoggedin,products,User:true}); 
   }).catch(()=>{
     console.log('errrr');
   })
 });
+router.get('/shop',(req,res)=>{
+  producthelpers.getAllproducts().then((products)=>{
+    res.render('user/Shop',{User:true,products})
+  }).catch(()=>{
+    console.log('errrr');
+  })
+});
+router.get('/shock',(req,res)=>{
+  res.render('user/Sho',{User:true})
+  })
 router.get('/login',(req,res)=>{
     res.render('user/login',{logginError:req.session.logginError,User:true})
     req.session.logginError=false
@@ -62,6 +71,22 @@ router.get('/single/:id',(req,res)=>{
   let product=req.params.id
   producthelpers.getOneproduct(product).then((Product)=>{
     res.render('user/single',{Product,User:true})
+  })
+});
+router.get('/category/:id',(req,res)=>{
+  console.log(req.params);
+  producthelpers.category(req.params.id).then((products)=>{
+    res.render('user/shop',{User:true,products,current:req.params})
+  })
+});
+router.get('/subcategory',(req,res)=>{
+  var category=req.query.category
+  console.log(req.query);
+  var subcategory=req.query.subcategory
+  console.log(category);
+  console.log(subcategory);
+  producthelpers.subCategory(category,subcategory).then((products)=>{
+    res.render('user/shop',{User:true,products})
   })
 })
 

@@ -1,0 +1,22 @@
+ <form action="/admin/add_sub" id="validate" method="POST">
+ <div class="form-group">
+  <label class="col-md-4 control-label" for="product_category">PRODUCT CATEGORY</label>
+  <div class="col-md-4">
+    <select id="category" size="0" onchange="makeSubmenu(this.value)" name="product_category" class="form-control">
+  <option value="" disabled selected>SELECT</option>
+          {{#each categories}}
+  <option value="MEN">{{this.product_category}}</option>
+      {{/each}}
+
+    </select>
+  </div>
+</div>
+    <div class="form-group">
+  <label class="col-md-4 control-label" for="product_category">SUB CATEGORY</label>
+  <div class="col-md-4">
+     <input type="text" name="sub_category" placeholder="SUB CATOGORY"  class="form-control input-md" >
+           <button id="singlebutton" name="singlebutton" class="btn btn-success">ADD SUB CATEGORY</button>
+
+  </div>
+      </div>
+</form>

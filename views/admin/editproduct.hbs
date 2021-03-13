@@ -20,15 +20,21 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="product_category">PRODUCT CATEGORY</label>
   <div class="col-md-4">
-    <select id="product_categorie"  name="product_category" class="form-control">
-  <option value="">{{product.product_category}}</option>
+    <select id="category"  size="0" onchange="makeSubmenu(this.value)" name="product_category" class="form-control">
+  <option value="" disabled selected>SELECT</option>
   <option value="MEN">MEN</option>
   <option value="WOMEN">WOMEN</option>
-  <option value="KIDS">KIDS</option>
-  <option value="ACCESORIES">ACCESORIES</option>
+  <option value="ACCESSORIES">ACCESSORIES</option>
     </select>
   </div>
 </div>
+{{!-- <div class="form-group">
+  <label class="col-md-4 control-label" for="product_category">SUB CATEGORY</label>
+  <div class="col-md-4">
+     <select  name="sub_category" id="categorySelect" size="0"  class="form-control"></select>
+    <option value=""></option>
+  </div>
+</div> --}}
 
 {{!-- <!-- Text input-->
 <div class="form-group">
@@ -71,7 +77,7 @@
         <img src="../../productImages/{{product._id}}.jpg" id="Imageview" style="width: 100px; hight:auto;" >
         <br>
         <br>
-    <input id="filebutton" name="Image" onchange="imageview(event)" class="input-file" type="file">
+    <input id="filebutton" name="image" onchange="imageview(event)" class="input-file" type="file">
   </div>
 </div>
 
@@ -92,11 +98,6 @@
 </fieldset>
 </form>
 
-<script>
-    function imageview(event){
-        console.log("hjbjhb")
-        document.getElementById('Imageview').src=URL.createObjectURL(event.target.files[0])
-    }
-</script>
+
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>

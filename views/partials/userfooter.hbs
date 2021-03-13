@@ -25,6 +25,8 @@
  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
 <script>
+</script>
+<script>
 $(document).ready(()=>{
   $('#validate').validate({
     rules:{
@@ -32,17 +34,22 @@ Email:{
   required:true,
   email:true
 },
+Username:{
+  required:true
+},
 Name:{
-required:true
+required:true,
 },
 Password:{
   required:true,
-  minlenght:4
+  minlength: 4
 },
 Username:{
   required:true
 },
 Phone:{
+ minlength: 10,
+ maxlength: 10,
   required:true
 }
     }

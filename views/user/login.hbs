@@ -1,40 +1,41 @@
 <section class="login_area p_100">
-<div class="container">
-<div class="login_inner">
-<div class="row">
-<div class="col-lg-4">
-<div class="login_title">
-<h2>log in your account</h2>
-<p>Log in to your account to discovery all great features</p>
-</div>
-<form action="/login" method="POST" id="validate" class="login_form row">
-<div class="col-lg-12 form-group">
-<input class="form-control" name="Email" type="text" placeholder="Email">
-</div>
-<div class="col-lg-12 form-group">
-<input class="form-control" name="Password" type="password"  placeholder="Password">
-</div>
-{{#if logginError}}
-<div><p style="color: red;">{{logginError}}</p></div>
-{{/if}}
-<div class="col-lg-12 form-group">
-<div class="creat_account">
-<input type="checkbox" id="f-option" name="selector">
-<label for="f-option">Keep me logged in</label>
-<div class="check"></div>
-</div>
-<br>
-<a href="/signup">
-    Create an account ?
-</a>
-</div>
-<div class="col-lg-12 form-group">
-<button type="submit" value="submit" class="btn update_btn form-control">Login</button>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</section> 
-
+    <div class="container">
+        <div class="login_inner">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="login_title">
+                        <h2>log in your account</h2>
+                        <p>Log in to your account to discovery all great features</p>
+                    </div>
+                    <form action="/login" method="POST" id="validate" class="login_form row">
+                        <div class="col-lg-12 form-group">
+                            <input class="form-control" name="Email" type="text" placeholder="Email">
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <input class="form-control" name="Password" type="password" placeholder="Password">
+                        </div>
+                        {{#if logginError}}
+                        <div>
+                            <p style="color: red;">{{logginError}}</p>
+                        </div>
+                        {{/if}}
+                        <div class="col-lg-12 form-group">
+                            <div class="creat_account">
+                                <input type="checkbox" id="f-option" name="selector">
+                                <label for="f-option">Keep me logged in</label>
+                                <div class="check"></div>
+                            </div>
+                            <br>
+                            <a href="/signup">
+                                Create an account ?
+                            </a>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <button type="submit" value="submit" class="btn update_btn form-control">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

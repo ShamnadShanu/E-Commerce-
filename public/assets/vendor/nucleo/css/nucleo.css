@@ -11,6 +11,9 @@ License - nucleoapp.com/license/
   font-weight: normal;
   font-style: normal;
 }
+label.error {
+    color: #f50f0b;
+}
 /*------------------------
     base class definition
 -------------------------*/

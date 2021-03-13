@@ -34,7 +34,11 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="/admin/blockproduct/{{this._id}}">Block</a>
+                          {{#if this.status}}
+                            <a class="dropdown-item" href="/admin/unblockuser/{{this._id}}">UnBlock</a>
+                          {{else}}
+                           <a class="dropdown-item" href="/admin/blockuser/{{this._id}}">Block</a>
+                          {{/if}}
                           <a class="dropdown-item" href="/admin/removeuser/{{this._id}}">Remove</a>
                         </div>
                       </div>
