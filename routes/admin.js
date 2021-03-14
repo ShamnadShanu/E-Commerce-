@@ -151,6 +151,19 @@ productHelpers.deleteCategory(req.params.id).then(()=>{
   res.redirect('/admin/categories')
 })
 });
+router.get('/edit_category/:id',verifyloggin,(req,res)=>{
+  console.log('hai');
+  console.log(req.params.id);
+  productHelpers.getOnecategory(req.params.id).then((result)=>{
+    console.log(result);
+    res.render('admin/editcategory',{Admin:true,result})
+  })
+})
+router.post('/edit_category/:id',(req,res)=>{
+  productHelpers.editCategory(req.params.id,req.body).then(()=>{
+    res.redirect('/admin/categories')
+  })
+})
 router.get('/delete_subcategory/:id',(req,res)=>{
   productHelpers.deletesubCategory(req.params.id).then(()=>{
     res.redirect('/admin/categories')

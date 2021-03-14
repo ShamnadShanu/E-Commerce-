@@ -65,7 +65,7 @@ return new Promise((resolve,reject)=>{
     //   }}).toArray()
     //   console.log(products);
     //   resolve(products)
-    let products=await db.get().collection(collections.PODUCT_COLLECTIONS).find({$and:[{product_category:category},{sub_category:subCategory}]}).toArray()
+    let products=await db.get().collection(collections.PODUCT_COLLECTIONS).find({product_category:category}).toArray()
     console.log(products);
     resolve(products)
 
@@ -103,9 +103,9 @@ return new Promise((resolve,reject)=>{
  resolve(category)
         })
     },
-    deleteCategory:(id)=>{
+    deletesubCategory:(id)=>{
         return new Promise((resolve,reject)=>{
-db.get().collection(collections.CATEGORY).updateOne({_id:objectId(id)},{product_category:false}).then(()=>{
+db.get().collection(collections.CATEGORY).removeOne({_id:objectId(id)}).then(()=>{
 resolve()
 })
         })
@@ -116,5 +116,20 @@ db.get().collection(collections.CATEGORY).removeOne({_id:objectId(id)}).then((da
 resolve(data)
 })
         })
-    }
+    },
+  getOnecategory:(id)=>{
+return new Promise(async(resolve,reject)=>{
+    let done=await db.get().collection(collections.CATEGORY).findOne({_id:objectId(id)})
+    resolve(done)
+})
+  },
+  editCategory:(id,data)=>{
+      return new Promise((resolve,reject)=>{
+          db.get().collection(collections.CATEGORY).updateOne({_id:objectId(id)},{$set:{
+              product_category:data.product_category
+          }}).then(()=>{
+              resolve()
+          })
+      })
+  }
 }

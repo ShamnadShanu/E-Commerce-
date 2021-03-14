@@ -20,9 +20,9 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="product_category">PRODUCT CATEGORY</label>
   <div class="col-md-4">
-    <select id="category"  size="0" onchange="makeSubmenu(this.value)" name="product_category" class="form-control">
+    <select id="category"  size="0"  name="product_category" class="form-control">
   <option value="" disabled selected>SELECT</option>
-  {{#each categories}} --}}
+  {{#each categories}}
   <option value="{{this.product_category}}">{{this.product_category}}</option>
   {{!-- <option value="MEN">MEN</option>
     <option value="WOME">WOMEN</option>
@@ -30,17 +30,11 @@
   <option value="ACCESSORIES">ACCESSORIES</option> --}}
 
 
-  {{/each}}
     </select>
   </div>
 </div>
-<div class="form-group">
-  <label class="col-md-4 control-label" for="category">SUB CATEGORY</label>
-  <div class="col-md-4">
-     <select  name="sub_category" id="categorySelect" size="0"  class="form-control"></select>
-    <option value=""></option>
-  </div>
-</div>
+    {{/each}}
+
 
 {{!-- <!-- Text input-->
 <div class="form-group">
@@ -104,4 +98,4 @@
 </form>
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{{!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> --}}

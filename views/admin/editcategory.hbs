@@ -1,8 +1,8 @@
-<form action="/admin/sub_category" method="POST">
-    <label class="col-md-4 control-label" for="product_category">SUB CATEGORY</label>
+<form action="/admin/edit_category/{{result._id}}" method="POST">
+    <label class="col-md-4 control-label" for="product_category">CATEGORY</label>
     <div class="col-md-4">
-        <input type="text" class="form-control" placeholder="CATEGORY" id="product_name_fr" name="category">
+        <input type="text" class="form-control" value="{{result.product_category}}" placeholder="CATEGORY" id="product_name_fr" name="product_category">
         <br>
-        <div class="btn btn-primary ml-auto" style="color:#fff;" href=""> Add sub category</div>
+    <button id="singlebutton" name="singlebutton" class="btn btn-success">SAVE CHANGES</button>
     </div>
 </form>

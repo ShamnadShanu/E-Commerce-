@@ -19,9 +19,6 @@ router.get('/shop',(req,res)=>{
     console.log('errrr');
   })
 });
-router.get('/shock',(req,res)=>{
-  res.render('user/Sho',{User:true})
-  })
 router.get('/login',(req,res)=>{
     res.render('user/login',{logginError:req.session.logginError,User:true})
     req.session.logginError=false
@@ -74,7 +71,8 @@ router.get('/single/:id',(req,res)=>{
   })
 });
 router.get('/category/:id',(req,res)=>{
-  console.log(req.params);
+  console.log('haihfsdf');
+  console.log(req.params.id);
   producthelpers.category(req.params.id).then((products)=>{
     res.render('user/shop',{User:true,products,current:req.params})
   })
