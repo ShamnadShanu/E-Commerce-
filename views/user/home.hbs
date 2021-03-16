@@ -109,14 +109,17 @@
 
 {{#each products}}
 <div class="col-lg-3 col-md-4 col-sm-6 ">
-<a href="/single/{{this._id}}">
   <div class="l_product_item">
 <div class="l_p_img">
+<a href="/single/{{this._id}}">
+
 <img class="img-fluid" style="height: 18rem;" src="../productImages/{{this._id}}.jpg" alt="">
+</a>
+
 </div>
  <div class="l_p_text">
 <ul>
-<li><a class="add_cart_btn" href="#">Add To Cart</a></li>
+<li><button  class="add_cart_btn" onclick="addToCart('{{this._id}}')">Add To Cart</button></li>
 <li class="p_icon"><a href="#"><i class="icon_heart_alt"></i></a></li>
 </ul>
 <h4>{{this.product_name}}</h4>
@@ -124,7 +127,6 @@
 <h5>${{this.product_price}}</h5>
 </div>
 </div>
-</a>
 </div>
 {{/each}}
 

@@ -72,12 +72,32 @@
 </div> --}}
  <!-- File Button --> 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="filebutton">main_image</label>
+  <label class="col-md-4 control-label" for="filebutton">Main_Image</label>
   <div class="col-md-4">
         <img src="../../productImages/{{product._id}}.jpg" id="Imageview" style="width: 100px; hight:auto;" >
         <br>
         <br>
     <input id="filebutton" name="Image" onchange="imageview(event)" class="input-file" type="file">
+  </div>
+</div>
+<!-- File Button --> 
+<div class="form-group">
+  <label class="col-md-4 control-label" for="filebutton">Second Image</label>
+  <div class="col-md-4">
+      <img src="../../productImages/{{product._id}}.jpg" id="Imageview1" alt="no image " style="width: 100px; hight:auto;" >
+        <br>
+        <br>
+    <input id="filebutton" name="Image1" onchange="imageview1(event)" class="input-file" type="file">
+  </div>
+</div>
+<!-- File Button --> 
+<div class="form-group">
+  <label class="col-md-4 control-label" for="filebutton">Third Image</label>
+  <div class="col-md-4">
+      <img src="../../productImages/{{product._id}}.jpg" id="Imageview2" alt="no image " style="width: 100px; hight:auto;" >
+        <br>
+        <br>
+    <input id="filebutton" name="Image2" onchange="imageview2(event)" class="input-file" type="file">
   </div>
 </div>
 

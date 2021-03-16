@@ -1,13 +1,13 @@
 <div class="row">
-  <div class="col">
+  <div class="table-responsive col">
     <div class="card bg-success shadow">
       <div class="card-header  bg-transparent border-0">
         <h1 class="text-white mb-0">All PRODUCTS</h1>
         <br>
         <a class="btn btn-primary ml-auto" style="color:#fff;" href="/admin/addproducts"> Add products</a>
       </div>
-      <div class="table-responsive">
-        <table id="myTable" style="color: black;" class="table align-items-center table-dark table-flush">
+      <div class="table-responsive" >
+        <table id="myTable" style="color: black;" style="width: 100%;" class=" table css-serial align-items-center table-dark table-flush">
           <thead class="thead-dark">
             <tr>
               <th scope="col" class="sort" data-sort="name">Product Name</th>
@@ -16,7 +16,7 @@
               {{!-- <th scope="col" class="sort" data-sort="status">Status</th> --}}
               <th scope="col">Images</th>
               <th scope="col" class="sort" data-sort="completion">Description</th>
-              <th scope="col"></th>
+              <th>option</th>
             </tr>
           </thead>
           <tbody class="list">
@@ -43,14 +43,14 @@
                     data-original-title="{{this.product_name}}">
                     <img alt="Image placeholder" src="../productImages/{{this._id}}.jpg">
                   </a>
-                  {{!-- <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip"
-                    data-original-title="Ryan Tompson">
-                    <img alt="Image placeholder" src="../assets/img/theme/team-1.jpg">
+                  <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip"
+                    data-original-title="{{this.product_name}}">
+                    <img alt="Image placeholder" src="../productImages/{{this._id}}1.jpg">
                   </a>
                   <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip"
-                    data-original-title="Ryan Tompson">
-                    <img alt="Image placeholder" src="../assets/img/theme/team-1.jpg">
-                  </a> --}}
+                    data-original-title="{{this.product_name}}">
+                    <img alt="Image placeholder" src="../productImages/{{this._id}}2.jpg">
+                  </a>
                 </div>
               </td>
               <td>
@@ -78,3 +78,5 @@
     </div>
   </div>
 </div>
+
+ 

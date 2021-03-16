@@ -8,6 +8,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
+    "cropperjs": "^1.5.11",
     "datatables.net": "^1.10.24",
     "datatables.net-dt": "^1.10.24",
     "debug": "~2.6.9",
@@ -19,6 +20,7 @@
     "fs": "0.0.1-security",
     "hbs": "^4.1.1",
     "http-errors": "~1.6.3",
+    "js-image-zoom": "^0.7.0",
     "mongo": "^0.1.0",
     "mongodb": "^3.6.4",
     "morgan": "~1.9.1",

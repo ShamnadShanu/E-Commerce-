@@ -18,6 +18,26 @@
 <link href="../vendors/revolution/css/settings.css" rel="stylesheet">
 <link href="../vendors/revolution/css/layers.css" rel="stylesheet">
 <link href="../vendors/revolution/css/navigation.css" rel="stylesheet">
+{{!-- zooom --}}
+
+<style>
+#zoom {
+  padding: 50px;
+  transition: transform .2s; /* Animation */
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
+}
+
+#zoom:hover {
+  transform: scale(2.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+</style>
+<script src="https://unpkg.com/js-image-zoom/js-image-zoom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-image-zoom/js-image-zoom.min.js"></script>
+{{!-- end --}}
+
+
 
 <link href="../vendors/owl-carousel/owl.carousel.min.css" rel="stylesheet">
 <link href="../vendors/bootstrap-selector/css/bootstrap-select.min.css" rel="stylesheet">
@@ -26,20 +46,7 @@
 <script src="../js/jquery-3.2.1.min.js"></script>
   <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
   <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-
 <header class="shop_header_area carousel_menu_area">
-<div class="carousel_top_header row m0">
-<div class="container">
-<div class="carousel_top_h_inner">
-<div class="float-md-right">
-<div class="top_header_middle">
-<a href="#"><i class="fa fa-phone"></i> Call Us: <span>+84 987 654 321</span></a>
-<a href="#"><i class="fa fa-envelope"></i> Email: <span><span class="__cf_email__" data-cfemail="43303633332c3137033a2c3631272c2e222a2d6d202c2e">[email&#160;protected]</span></span></a>
-</div>
-</div>
-</div>
-</div>
-</div>
 <div class="carousel_menu_inner">
 <div class="container">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -48,7 +55,6 @@
 <span class="navbar-toggler-icon"></span>
 </button>
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
 <ul class="navbar-nav mr-auto">
 <li class="nav-item"><a class="nav-link" href="/">HOME</a></li>
 <li class="nav-item"><a class="nav-link" href="/shop">SHOP</a></li>
@@ -59,13 +65,13 @@
 <ul class="navbar-nav  mr-auto ">
 <li class="nav-item"><a class="nav-link"  href="#"><i class="icon-magnifier icons"></i></a></li>
 <li class="nav-item"><a class="nav-link"  href="#"><i class="icon-user icons"></i></a></li>
-<li class="nav-item"><a class="nav-link"  href="#"><i class="icon-handbag icons"></i></a></li>
+<li class="nav-item"><a class="nav-link"  href="/cart"><i class="icon-handbag icons"><span id="cart-count" class="badge badge-danger">{{Cartcount}}</span></i></a></li>
 {{#if user}}
-<li class="user_icon"><a href="/logout">
+<li class="user_icon"><a class="nav-link" href="/logout">
 <i class="fas fa-sign-out-alt"></i>
 </a></li>
 {{else}}
-<li class="user_icon"><a href="/login">
+<li class="user_icon"><a class="nav-link" href="/login">
 <i class="fas fa-sign-in-alt"></i>
 </a></li>
 {{/if}}

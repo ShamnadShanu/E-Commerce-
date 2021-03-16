@@ -15,23 +15,24 @@
 <div class="container">
 {{#if Product}}
 <div class="row">
-<div class="col-lg-4">
+<div  class="col-lg-4">
 <div class="product_details_slider">
 <div id="product_slider" class="rev_slider" data-version="5.3.1.6">
 <ul> 
-
-<li data-index="rs-137221490" data-transition="scaledownfrombottom" data-slotamount="7" data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1500" data-thumb="../productImages/{{Product._id}}.jpg" data-rotate="0" data-fstransition="fade" data-fsmasterspeed="1500" data-fsslotamount="7" data-saveperformance="off" data-title="Ishtar X Tussilago" data-param1="25/08/2015" data-description="">
- 
-<img src="../productImages/{{Product._id}}.jpg" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
-
+ <li  id="zoom" data-index="rs-137221490" data-transition="scaledownfrombottom" data-slotamount="7" data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1500" data-thumb="../productImages/{{Product._id}}.jpg" data-rotate="0" data-fstransition="fade" data-fsmasterspeed="1500" data-fsslotamount="7" data-saveperformance="off" data-title="Ishtar X Tussilago" data-param1="25/08/2015" data-description="">
+<img  src="../productImages/{{Product._id}}.jpg" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
 </li>
-{{!-- 
-<li data-index="rs-136228343" data-transition="scaledownfrombottom" data-slotamount="7" data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1500" data-thumb="img/product/product-details/p-details-tab-2.jpg" data-rotate="0" data-saveperformance="off" data-title="Los Angeles" data-param1="13/08/2015" data-description="">
-
-<img src="img/product/product-details/p-details-big-1.jpg" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
-
+<li data-index="rs-136228343" data-transition="scaledownfrombottom" data-slotamount="7" data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1500" data-thumb="../productImages/{{Product._id}}1.jpg" data-rotate="0" data-saveperformance="off" data-title="Los Angeles" data-param1="13/08/2015" data-description="">
+<img src="../productImages/{{Product._id}}1.jpg" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
+</li>
+<li data-index="rs-135960434" data-transition="scaledownfrombottom" data-slotamount="7" data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1500" data-thumb="../productImages/{{Product._id}}2.jpg" data-rotate="0" data-saveperformance="off" data-title="Los Angeles" data-param1="13/08/2015" data-description="">
+<img src="../productImages/{{Product._id}}2.jpg" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
 </li>
 
+</ul>
+
+
+{{!--
 <li data-index="rs-135960434" data-transition="scaledownfrombottom" data-slotamount="7" data-easein="Power3.easeInOut" data-easeout="Power3.easeInOut" data-masterspeed="1500" data-thumb="img/product/product-details/p-details-tab-3.jpg" data-rotate="0" data-saveperformance="off" data-title="The Colors of Feelings" data-param1="11/08/2015" data-description="">
 
 <img src="img/product/product-details/p-details-big-1.jpg" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
@@ -68,7 +69,6 @@
 
 </li> --}}
 
-</ul>
 </div>
 </div>
 </div>
@@ -114,7 +114,7 @@
 <input type="text" name="qty" id="sst" maxlength="12" value="01" title="Quantity:" class="input-text qty">
 <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" class="increase items-count" type="button"><i class="icon_plus"></i></button>
 </div>
-<a class="add_cart_btn" href="#">add to cart</a>
+<a class="add_cart_btn" href="/addtocart/{{Product._id}}">Add to cart</a>
 </div>
 <div class="shareing_icon">
 <h5>share :</h5>
@@ -220,4 +220,5 @@
 </div>
 </div>
 </section>
+
 

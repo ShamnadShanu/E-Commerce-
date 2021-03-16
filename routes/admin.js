@@ -43,7 +43,7 @@ adminHelpers.doLogin(req.body).then((response)=>{
 })
 });
 router.get('/allproducts',verifyloggin,function(req, res, next) {
-  productHelpers.getAllproducts().then((Data)=>{
+  productHelpers.getAllproductsad().then((Data)=>{
     console.log(Data);
     res.render('admin/allproducts',{Category:req.session.Category,Admin:true,Data})
   })
@@ -69,14 +69,24 @@ console.log(req.body);
 productHelpers.addproduct(req.body).then((id)=>{
   console.log(id);
     let Image=req.files.Image
+    let Image1=req.files.Image1
+    let Image2=req.files.Image2
+
+
     Image.mv('./public/productImages/'+id+'.jpg',(err,done)=>{
-      if(!err){
-        res.redirect('/admin/allproducts')
-      }else{
-        res.redirect('/admin/addproducts')
-        req.session.wrong='something wrong please try again'
-      }
+      Image1.mv('./public/productImages/'+id+'1'+'.jpg',(err,done)=>{
+        Image2.mv('./public/productImages/'+id+'2'+'.jpg',(err,done)=>{
+          if(!err){
+            res.redirect('/admin/allproducts')
+          }else{
+            res.redirect('/admin/addproducts')
+            req.session.wrong='something wrong please try again'
+          }
+        })
+      })
     })
+    
+    
 })
 });
 router.get('/removeproduct/:id',verifyloggin,(req,res)=>{
@@ -98,16 +108,24 @@ router.get('/editproduct/:id',verifyloggin,(req,res)=>{
 })
 router.post('/editproduct/:id',(req,res)=>{
   let product=req.params.id
-  console.log('change cheythath',req.body);
   productHelpers.editProduct(product,req.body).then((id)=>{
-    console.log('Image',id);
-    if(req.files.image){
-      let Image=req.files.image
-      Image.mv('./public/productImages/'+id+'.jpg')
-      res.redirect('/admin/allproducts')
-    }else{
-      res.redirect('/admin/allproducts')
-    }
+    let Image=req.files.Image
+    let Image1=req.files.Image1
+    let Image2=req.files.Image2
+
+
+    Image.mv('./public/productImages/'+id+'.jpg',(err,done)=>{
+      Image1.mv('./public/productImages/'+id+'1'+'.jpg',(err,done)=>{
+        Image2.mv('./public/productImages/'+id+'2'+'.jpg',(err,done)=>{
+          if(!err){
+            res.redirect('/admin/allproducts')
+          }else{
+            res.redirect('/admin/addproducts')
+            req.session.wrong='something wrong please try again'
+          }
+        })
+      })
+    })     
   })
 });
 router.get('/blockuser/:id',verifyloggin,(req,res)=>{

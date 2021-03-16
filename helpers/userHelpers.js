@@ -30,8 +30,9 @@ return new Promise(async(resolve,reject)=>{
   if(user){
       console.log(user.status);
       if(user.status){
-        resolve({status:false})
-    }else{
+          response.userBlock='You Are Blocked Becuase Some Malicious Activity'
+          
+    }
         bcrypt.compare(Data.Password,user.Password).then((status)=>{
             if(status){
                 console.log('login success');
@@ -43,7 +44,7 @@ return new Promise(async(resolve,reject)=>{
         resolve({status:false})
      }
         })
-        }
+    
       }
      else{
 console.log('user invalid');
@@ -76,6 +77,67 @@ unblockUser:(user)=>{
                 resolve()
             })
     })
+    },
+    blockCheck:(Data)=>{
+return new Promise(async(resolve,reject)=>{
+   let user=await db.get().collection(collections.USER_COLLECTION).findOne({Email:Data.Email})
+   if(user.status){
+       resolve()
+   }else{
+       reject()
+   }
+
+})
+    },
+    addTocart:(proId,userId)=>{
+return new Promise(async(resolve,reject)=>{
+    cart=await db.get().collection(collections.CART).findOne({user:objectId(userId)})
+    if(cart){
+db.get().collection(collections.CART).updateOne({user:objectId(userId)},{$push:{products:objectId(proId)}}).then((data)=>{
+    resolve(data)
+})
+    }else{
+    let CART={
+        user:objectId(userId),
+        products:[objectId(proId)]
+    }
+    db.get().collection(collections.CART).insertOne(CART).then((data)=>{
+        resolve(data.ops[0])
+        console.log('jaiofifa');
+        console.log(data.ops[0]);
+    })
+    }
+})
+    },
+    getCart:(user)=>{
+        return new Promise(async(resolve,reject)=>{
+          let data=await db.get().collection(collections.CART).aggregate([{
+              $match:{user:objectId(user)}
+          },{
+              $lookup:{
+                  from:collections.PODUCT_COLLECTIONS,
+                  let:{proList:'$products'},
+                  pipeline:[
+                      {
+$match:{
+    $expr:{
+        $in:['$_id',"$$proList"]
+    }
+}
+                      }
+                  ],
+                  as:'CartItems'
+              }
+          }]).toArray()
+          resolve(data[0].CartItems)
+        })
+    },
+    getCount:(userId)=>{
+return new Promise(async(resolve,reject)=>{
+ let user=await db.get().collection(collections.CART).findOne({user:objectId(userId)})
+ length=user.products.length
+ resolve(length)
+})
     }
 
 }

@@ -24,16 +24,11 @@
   <option value="" disabled selected>SELECT</option>
   {{#each categories}}
   <option value="{{this.product_category}}">{{this.product_category}}</option>
-  {{!-- <option value="MEN">MEN</option>
-    <option value="WOME">WOMEN</option>
-
-  <option value="ACCESSORIES">ACCESSORIES</option> --}}
-
+      {{/each}}
 
     </select>
   </div>
 </div>
-    {{/each}}
 
 
 {{!-- <!-- Text input-->
@@ -72,30 +67,46 @@
 </div> --}}
  <!-- File Button --> 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="filebutton">main_image</label>
+  <label class="col-md-4 control-label" for="filebutton">Main_image</label>
   <div class="col-md-4">
-      <img src="../../productImages/{{product._id}}.jpg" id="Imageview" alt="no image " style="width: 100px; hight:auto;" >
+      <img src="" id="Imageview" style="width: 100px; hight:auto;">
         <br>
         <br>
-    <input id="filebutton" name="Image" onchange="imageview(event)" class="input-file" type="file">
+    <input id="cropperfile" name="Image" onchange="imageview(event)" class="input-file" type="file">
   </div>
 </div>
 <!-- File Button --> 
-{{!-- <div class="form-group">
-  <label class="col-md-4 control-label" for="filebutton">auxiliary_images</label>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="filebutton">Second Image</label>
   <div class="col-md-4">
-    <input id="filebutton" name="filebutton" class="input-file" type="file">
+      <img src="" id="Imageview1" style="width: 100px; hight:auto;">
+        <br>
+        <br>
+    <input id="image" name="Image1" onchange="imageview1(event)" class="input-file" accept="image/*" type="file">
   </div>
-</div> --}}
+</div>
+<!-- File Button --> 
+<div class="form-group">
+  <label class="col-md-4 control-label" for="filebutton">Third image</label>
+  <div class="col-md-4">
+      <img src="" id="Imageview2" style="width: 100px; hight:auto;" >
+        <br>
+        <br>
+    <input id="image" name="Image2" onchange="imageview2(event)" class="input-file" type="file">
+  </div>
+</div>
 
 <!-- Button -->
 <div class="form-group">
   <div class="col-md-4">
-    <button id="singlebutton" name="singlebutton" class="btn btn-success">ADD PRODUCT</button>
+    <button id="image" name="singlebutton" class="btn btn-success">ADD PRODUCT</button>
   </div>
   </div>
 </fieldset>
 </form>
+
+
+
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 {{!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> --}}

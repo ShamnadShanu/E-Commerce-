@@ -2,7 +2,6 @@ let db=require('../config/mongodb')
 let collections=require('../config/collections')
 const { reject, resolve } = require('promise')
 const objectId= require('mongodb').ObjectID
-const ThenPromise = require('promise')
 
 
 module.exports={
@@ -16,9 +15,22 @@ module.exports={
 
     },
     getAllproducts:()=>{
+        let full={}
         return new Promise(async(resolve,reject)=>{
           let Data=await db.get().collection(collections.PODUCT_COLLECTIONS).find().toArray()
-                resolve(Data)
+
+          let categories=await db.get().collection(collections.CATEGORY).find().toArray()
+          full.category=categories
+          full.products=Data
+                 resolve(full)
+        
+        })
+
+    },
+    getAllproductsad:()=>{
+        return new Promise(async(resolve,reject)=>{
+          let Data=await db.get().collection(collections.PODUCT_COLLECTIONS).find().toArray()
+    resolve(Data)
         
         })
 
