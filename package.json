@@ -25,5 +25,8 @@
     "mongodb": "^3.6.4",
     "morgan": "~1.9.1",
     "promise": "^8.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }

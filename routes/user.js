@@ -1,4 +1,5 @@
 const { response } = require('express');
+const e = require('express');
 var express = require('express');
 const producthelpers = require('../helpers/producthelpers');
 var router = express.Router();
@@ -21,12 +22,11 @@ let blockCheck=(req,res,next)=>{
 }
 
 /* GET home page. */
-router.get('/',async function(req, res, next) {
-  let Cartcount=null
+router.get('/',async function(req, res, next) {  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
 
+  let Cartcount=0
   if(req.session.user){
     Cartcount= await userHelpers.getCount(req.session.user._id)
-
   }
   producthelpers.getAllproducts().then((full)=>{
     
@@ -37,10 +37,8 @@ router.get('/',async function(req, res, next) {
     console.log('errrr');
   })
 });
-router.get('/addtocart/:id',(req,res)=>{
-  console.log('dvjihifu');
+router.get('/addtocart/:id',verifyloggin,(req,res)=>{
 userHelpers.addTocart(req.params.id,req.session.user._id).then(()=>{
-
 let response={
 }
 response.status=true
@@ -50,17 +48,20 @@ if(req.session.userLoggedin){
   res.json(response)
 })
 })
-router.get('/shop',(req,res)=>{ 
+router.get('/shop',async(req,res)=>{   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
+
+  let Cartcount=0
+  if(req.session.user){
+    Cartcount= await userHelpers.getCount(req.session.user._id)
+  }
+
   producthelpers.getAllproducts().then((full)=>{
-    let count=null
     let products=full.products
     let categories=full.category
     req.session.category=categories
-    console.log('hio');
     if(req.session.user){
-      count=req.session.cartCount
     }
-    res.render('user/Shop',{User:true,count,products,user:req.session.userLoggedin,categories})
+    res.render('user/Shop',{User:true,Cartcount,products,user:req.session.userLoggedin,categories})
   }).catch(()=>{
     console.log('errrr');
   })
@@ -72,9 +73,7 @@ router.get('/login',(req,res)=>{
 });
 router.post('/login',(req,res)=>{
   userHelpers.dologin(req.body).then((response)=>{
-    console.log(response);
     if(response.status){
-      console.log(response.status);
       if(response.userBlock){
       req.session.block=response.userBlock
       res.redirect('/login')
@@ -118,43 +117,51 @@ router.get('/logout',(req,res)=>{
   req.session.user=false
   res.redirect('/')
 })
-router.get('/single/:id',(req,res)=>{
-  let count=null
-  let product=req.params.id
+router.get('/single/:id',async(req,res)=>{  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
+
+  let Cartcount=0
   if(req.session.user){
-    count=req.session.cartCount
+    Cartcount= await userHelpers.getCount(req.session.user._id)
+  }  let product=req.params.id
+  if(req.session.user){
   }
 
   producthelpers.getOneproduct(product).then((Product)=>{
-    res.render('user/single',{Product,count,user:req.session.userLoggedin,User:true})
+    res.render('user/single',{Cartcount,Product,user:req.session.userLoggedin,User:true})
   })
 });
-router.get('/category/:id',(req,res)=>{
-  let count=null
-  console.log('haihfsdf');
+router.get('/category/:id',async(req,res)=>{  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
+
+  let Cartcount=0
+  if(req.session.user){
+    Cartcount= await userHelpers.getCount(req.session.user._id)
+  }  console.log('haihfsdf');
   console.log(req.params.id);
   if(req.session.user){
-    count=req.session.cartCount
   }
   producthelpers.category(req.params.id).then((products)=>{
-    res.render('user/shop',{User:true,count,products,user:req.session.userLoggedin,categories:req.session.category,current:req.params})
+    res.render('user/shop',{User:true,Cartcount,products,user:req.session.userLoggedin,categories:req.session.category,current:req.params})
   })
 });
-router.get('/cart',verifyloggin,(req,res)=>{
-  let count=null
-  userHelpers.getCart(req.session.user._id).then((data)=>{
+router.get('/cart',verifyloggin,async(req,res)=>{ 
+   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
+
+  let Cartcount=0
+  if(req.session.user){
+    Cartcount= await userHelpers.getCount(req.session.user._id)
+  }  userHelpers.getCart(req.session.user._id).then((data)=>{
     if(data){
       if(req.session.user){
-        count=req.session.cartCount
       }
       console.log(data);
-      res.render('user/cart',{count,User:true,data})
+      res.render('user/cart',{Cartcount,User:true,data,user:req.session.userLoggedin})
+    }else{
+      res.render('user/emCart',{User:true,user:req.session.userLoggedin})
     }
-   
-
   })
 });
 router.get('/subcategory',(req,res)=>{
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
   var category=req.query.category
   console.log(req.query);
   var subcategory=req.query.subcategory
@@ -163,6 +170,17 @@ router.get('/subcategory',(req,res)=>{
   producthelpers.subCategory(category,subcategory).then((products)=>{
     res.render('user/shop',{User:true,user:req.session.userLoggedin,products})
   })
+}),
+router.post('/change',(req,res,next)=>{
+  userHelpers.changeProductQuantity(req.body).then((response)=>{
+    res.json(response)
+  })
+});
+router.get('/removecart/',(req,res)=>{  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
+
+producthelpers.removecart(req.query).then(()=>{
+  res.redirect('/cart')
+})
 })
 
 

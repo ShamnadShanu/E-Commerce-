@@ -143,5 +143,18 @@ return new Promise(async(resolve,reject)=>{
               resolve()
           })
       })
+  },
+  removecart:(Data)=>{
+      console.log('fji');
+      return new Promise((resolve,reject)=>{
+        db.get().collection(collections.CART)
+        .updateOne({_id:objectId(Data.cartId)},
+        {
+            $pull:{products:{item:objectId(Data.proId)}}
+        }
+        ).then(()=>{
+            resolve()
+        })
+      })
   }
 }
