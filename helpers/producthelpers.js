@@ -62,7 +62,6 @@ return new Promise((resolve,reject)=>{
         })
     },
     category:(category)=>{
-        console.log('hai guys');
         return new Promise (async(resolve,reject)=>{
             let result=await db.get().collection(collections.PODUCT_COLLECTIONS).find({product_category:category}).toArray()
             console.log(result);

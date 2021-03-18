@@ -69,30 +69,34 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">Main_image</label>
   <div class="col-md-4">
-      <img src="" id="Imageview" style="width: 100px; hight:auto;">
+      <img src="" id="Imageview" style="display: none; width: 100px; hight:auto;">
         <br>
+        <span style="display: none; color:red" id="id"> Please select an image file</span>
         <br>
-    <input id="cropperfile" name="Image" onchange="imageview(event)" class="input-file" type="file">
+    <input id="image" name="Image" onchange="imageview(event); fileValidation('id','image');" class="input-file" type="file">
   </div>
 </div>
 <!-- File Button --> 
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">Second Image</label>
   <div class="col-md-4">
-      <img src="" id="Imageview1" style="width: 100px; hight:auto;">
+      <img  src="" id="Imageview1" style="display: none; width: 100px; hight:auto;">
         <br>
+                <span style="display: none; color:red" id="od">Please select an image file</span>
         <br>
-    <input id="image" name="Image1" onchange="imageview1(event)" class="input-file" accept="image/*" type="file">
+    <input id="second" name="Image1" onchange="imageview1(event); fileValidation('od','second');" class="input-file" accept="image/*" type="file">
   </div>
 </div>
 <!-- File Button --> 
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">Third image</label>
   <div class="col-md-4">
-      <img src="" id="Imageview2" style="width: 100px; hight:auto;" >
+      <img src="" id="Imageview2" style="display: none; width: 100px; hight:auto;" >
         <br>
+                        <span style="display: none; color:red" id="ud"> Please select an image file</span>
+
         <br>
-    <input id="image" name="Image2" onchange="imageview2(event)" class="input-file" type="file">
+    <input id="third" name="Image2" onchange="imageview2(event); fileValidation('ud','third');" class="input-file" type="file">
   </div>
 </div>
 

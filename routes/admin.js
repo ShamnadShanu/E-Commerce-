@@ -7,6 +7,8 @@ const adminHelpers=require('../helpers/adminHelpers')
 const { route } = require('./User');
 const e = require('express');
 const collections = require('../config/collections');
+const isImageURL = require('image-url-validator').default;
+
 var verifyloggin=(req,res,next)=>{
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
   if(req.session.adminLoggedin){
@@ -66,16 +68,15 @@ router.get('/addproducts',verifyloggin,(req,res)=>{
 })
 router.post('/addproducts',(req,res)=>{
 console.log(req.body);
-productHelpers.addproduct(req.body).then((id)=>{
+productHelpers.addproduct(req.body).then(async(id)=>{
   console.log(id);
     let Image=req.files.Image
     let Image1=req.files.Image1
     let Image2=req.files.Image2
 
-
     Image.mv('./public/productImages/'+id+'.jpg',(err,done)=>{
-      Image1.mv('./public/productImages/'+id+'1'+'.jpg',(err,done)=>{
-        Image2.mv('./public/productImages/'+id+'2'+'.jpg',(err,done)=>{
+      Image1.mv('./public/productImages/'+id+1+'.jpg',(err,done)=>{
+        Image2.mv('./public/productImages/'+id+2+'.jpg',(err,done)=>{
           if(!err){
             res.redirect('/admin/allproducts')
           }else{
