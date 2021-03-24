@@ -203,11 +203,16 @@ router.get('/categories',verifyloggin,(req,res)=>{
 
     }
 
-
   })
   // productHelpers.getAllcatrgories().then((category)=>{
   //   res.render('admin/categories',{Admin:true,category})
   // })
+});
+router.get('/all-orders',(req,res)=>{
+  adminHelpers.allOrders().then((orders)=>{
+    console.log(orders);
+    res.render('admin/all-orders',{Admin:true,orders})
+  })
 })
 
 module.exports = router;

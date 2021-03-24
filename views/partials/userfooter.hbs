@@ -23,9 +23,193 @@
 <script src="../js/theme.js"></script>
 <script src="https://kit.fontawesome.com/6d4aca2192.js" crossorigin="anonymous"></script>
  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+ <footer class="footer_area">
+<div class="container">
+<div class="footer_widgets">
+<div class="row">
+<div class="col-lg-4 col-md-4 col-6">
+<aside class="f_widget f_about_widget">
+<img src="../../img/logo.png" alt="">
+<p>Persuit is a Premium PSD Template. Best choice for your online store. Let purchase it to enjoy now</p>
+<h6>Social:</h6>
+<ul>
+<li><a href="#"><i class="social_facebook"></i></a></li>
+<li><a href="#"><i class="social_twitter"></i></a></li>
+<li><a href="#"><i class="social_pinterest"></i></a></li>
+<li><a href="#"><i class="social_instagram"></i></a></li>
+<li><a href="#"><i class="social_youtube"></i></a></li>
+</ul>
+</aside>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<aside class="f_widget link_widget f_info_widget">
+<div class="f_w_title">
+<h3>Information</h3>
+</div>
+<ul>
+<li><a href="#">About us</a></li>
+<li><a href="#">Delivery information</a></li>
+<li><a href="#">Terms & Conditions</a></li>
+<li><a href="#">Help Center</a></li>
+<li><a href="#">Returns & Refunds</a></li>
+</ul>
+</aside>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<aside class="f_widget link_widget f_service_widget">
+<div class="f_w_title">
+<h3>Customer Service</h3>
+</div>
+<ul>
+<li><a href="#">My account</a></li>
+<li><a href="#">Ordr History</a></li>
+<li><a href="#">Wish List</a></li>
+<li><a href="#">Newsletter</a></li>
+<li><a href="#">Contact Us</a></li>
+</ul>
+</aside>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<aside class="f_widget link_widget f_extra_widget">
+<div class="f_w_title">
+<h3>Extras</h3>
+</div>
+<ul>
+<li><a href="#">Brands</a></li>
+<li><a href="#">Gift Vouchers</a></li>
+<li><a href="#">Affiliates</a></li>
+<li><a href="#">Specials</a></li>
+</ul>
+</aside>
+</div>
+<div class="col-lg-2 col-md-4 col-6">
+<aside class="f_widget link_widget f_account_widget">
+<div class="f_w_title">
+<h3>My Account</h3>
+</div>
+<ul>
+<li><a href="#">My account</a></li>
+<li><a href="#">Ordr History</a></li>
+<li><a href="#">Wish List</a></li>
+<li><a href="#">Newsletter</a></li>
+</ul>
+</aside>
+</div>
+</div>
+</div>
+<div class="footer_copyright">
+<h5>© <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> 
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com/" target="_blank">Colorlib</a>
 
+</h5>
+</div>
+</div>
+</footer>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
+  $(document).ready(()=>{
+    $('#checkout-form').validate({
+      rules:{
+        fname:{
+          required:true
+        },
+        lname:{
+          required:true
+        },
+        pincode:{
+          required:true,
+        },
+        address:{
+required:true
+        },
+        town:{
+          required:true
+        },
+        email:{
+          required:true,
+          email:true
+        },
+        mobile:{
+          required:true,
+          minlength: 10,
+           maxlength: 10
+        }
+      },
+      messages: {
+        email:{
+          required:'please enter your email',
+          email:'enter a valid email'
+        }
+      },
+    submitHandler: function(form,e) {
+console.l
+        e.preventDefault()
+        $.ajax({
+            url:'/place-order',
+            method:'post',
+            data:$('#checkout-form').serialize(),
+            success:(response)=>{
+              console.log(response)
+                alert(response)
+           if(response.codSuccess){       
+location.href='/order-success'
+            }else{
+             razorpayPayment(response)
+            }
+            }
+        })
+    }
+
+    })
+  })
+  function razorpayPayment(order) {
+    var options = {
+    "key": "rzp_test_ngthi084Y8vNMx", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "project",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options); 
+   rzp1.open();
+  }
+  function verifyPayment(payment,order){
+    $.ajax({
+      url:'/verify-payment',
+      data:{
+        payment,
+        order
+      },
+      method:'post',
+      success:(response)=>{
+        if(response.status){
+          alert('payement succrss')
+         location.href='/order-success'
+        }else{
+          location.href='/'
+        }
+      }
+    })
+  }
 </script>
+
+
 <script>
 $(document).ready(()=>{
   $('#validate').validate({
@@ -55,8 +239,12 @@ Phone:{
     }
   })
 })
-
 </script>
+   <script>
+        $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+      </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -70,6 +258,7 @@ Phone:{
     <script src='../js/index.js'></script>
 
 </body>
+
 
 <!-- Mirrored from preview.colorlib.com/theme/persuit/home-carousel.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 22 Feb 2021 07:24:02 GMT -->
 </html>

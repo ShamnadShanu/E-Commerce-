@@ -3,6 +3,8 @@ module.exports={
     USER_COLLECTION:'userCollections',
     CART:'cartCollections',
     CATEGORY:"catogoryCollectionss",
-   SUBCATEGORY:"subcatogoryCollectionss"
+   SUBCATEGORY:"subcatogoryCollectionss",
+   ORDER_COLLECTIONS:"order",
+   ADDRESS_COLLECTIONS:'address'
 
 }

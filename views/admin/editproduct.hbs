@@ -13,7 +13,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="product_price">PRICE</label>  
   <div class="col-md-4">
-  <input id="product_price" name="product_price" value="{{product.product_price}}" placeholder="PRICE" class="form-control input-md" type="text" >
+  <input id="product_price" name="product_price" value="{{product.product_price}}" placeholder="PRICE" class="form-control input-md" type="number" >
   </div>
 </div>
 <!-- Select Basic -->
@@ -84,7 +84,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">Second Image</label>
   <div class="col-md-4">
-      <img src="../../productImages/{{product._id}}.jpg" id="Imageview1" alt="no image " style="width: 100px; hight:auto;" >
+      <img src="../../productImages/{{product._id}}1.jpg" id="Imageview1" alt="no image " style="width: 100px; hight:auto;" >
         <br>
         <br>
     <input id="filebutton" name="Image1" onchange="imageview1(event)" class="input-file" type="file">
@@ -94,7 +94,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">Third Image</label>
   <div class="col-md-4">
-      <img src="../../productImages/{{product._id}}.jpg" id="Imageview2" alt="no image " style="width: 100px; hight:auto;" >
+      <img src="../../productImages/{{product._id}}2.jpg" id="Imageview2" alt="no image " style="width: 100px; hight:auto;" >
         <br>
         <br>
     <input id="filebutton" name="Image2" onchange="imageview2(event)" class="input-file" type="file">

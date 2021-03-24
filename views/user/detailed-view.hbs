@@ -1,0 +1,22 @@
+<section>
+    <div style="color: #fff;" class="container" mt-5>
+        <div class="row">
+            {{#each response}}
+<div class="col-md-6 p-3">
+    <div class="card" style="width: 18rem; background-color:rgb(151, 51, 51)">
+        <img style="height:250px; width:240px; margin-left: 20px;" src="../productImages/{{this.products._id}}.jpg" class="card-img-top"
+            alt="...">
+        <p class="card-title"><h6>Product:</h6> {{this.products.product_name}}</p>
+
+        <div class="card-body">
+            <p class="card-text"><h6>Description:</h6> {{this.products.product_description}}</p>
+        </div>
+        <div>
+            <h6 class="card-text">Quantity: {{this.quantity}}</h6>
+        </div>
+    </div>
+</div>
+{{/each}}
+        </div>
+    </div>
+</section>

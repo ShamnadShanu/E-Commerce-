@@ -10,7 +10,7 @@
 
 
                 {{!-- kjnjnkj --}}
-                {{#each data}}
+                {{#each hi.data}}
                 <tr>
                   <th scope="row">
                     <a href="/removecart/?cartId={{this._id}}&proId={{this.products._id}}">
@@ -30,21 +30,26 @@
                     </div>
                   </td>
                   <td>
-                    <p class="red">${{this.products.product_price}}</p>
+                    <p class="red"> Rs.{{this.products.product_price}}</p>
                   </td>
-                  <td>
+                   <td>
+                    <p class="red"> Rs.<span id="{{this.products._id}}1">{{this.sub}}</span></p>
+                  </td>
+-                  <td>
                     <div style="width: 53px;" class="quantity">
                       <div class="custom">
-                        <button onclick="change('{{this._id}}','{{this.products._id}}',-1)" class="btn btn-danger"
+                        <button onclick="change('{{this._id}}','{{this.products._id}}','{{../user._id}}',-1)" class="btn btn-danger"
                           type="button"><i class="icon_minus-06"></i></button>
                         <span style="font-size: large;" id="{{this.products._id}}">{{this.quantity}}</span>
-                        <button onclick="change('{{this._id}}','{{this.products._id}}',1)" class="btn btn-success"
+                        <button onclick="change('{{this._id}}','{{this.products._id}}','{{../user._id}}',1)" class="btn btn-success"
                           type="button"><i class="icon_plus"></i></button>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <p>$150</p>
+                    <p>
+                      {{!--  --}}
+                    </p>
                   </td>
                 </tr>
                 {{/each}}
@@ -90,7 +95,9 @@
                 <h5>Subtotal</h5>
               </div>
               <div class="media-body">
-                <h6>$14</h6>
+                <h6>
+            Rs.<span id="total">{{hi.total}}</span> 
+                  </h6>
               </div>
             </div>
             <div class="media">
@@ -119,11 +126,11 @@
               Total
             </div>
             <div class="float-right">
-              $400
+           Rs.<span id="total1">{{hi.total}}</span>
             </div>
           </div>
         </div>
-        <button type="submit" value="submit" class="btn subs_btn form-control">Proceed to checkout</button>
+        <a type="submit" href="/register" value="submit" class="btn subs_btn form-control">Proceed to checkout</a>
       </div>
     </div>
   </div>

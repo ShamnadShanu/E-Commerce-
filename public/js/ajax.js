@@ -1,6 +1,3 @@
-const { response } = require("express");
-const { fchmod } = require("fs");
-
 function addToCart(proId){
     $.ajax({ 
         url:'/addtocart/'+proId,
@@ -19,12 +16,14 @@ function addToCart(proId){
                   }
     })
 }
-function change(cartId,proId,count){
+function change(cartId,proId,userId,count){
   let  quantity=parseInt(document.getElementById(proId).innerHTML)
+  let subtotal=parseInt(document.getElementById(proId+'1').innerHTML)
   count=parseInt(count)
  $.ajax({
      url:'/change',
      data:{
+         user:userId,
          cart:cartId,
          product:proId,
          count:count,
@@ -35,10 +34,17 @@ function change(cartId,proId,count){
      if(response.remove){
          location.reload()
      }else{
+         console.log(subtotal);
          document.getElementById(proId).innerHTML=quantity+count
+         document.getElementById('total').innerHTML=response.total
+         document.getElementById('total1').innerHTML=response.total
+         if(count==1){
+     document.getElementById(proId+'1').innerHTML=subtotal+response.pro
+         }
+         if(count==-1){
+            document.getElementById(proId+'1').innerHTML=subtotal-response.pro
+         }
      }
-
-
      }
  })
 }

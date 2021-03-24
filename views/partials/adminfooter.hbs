@@ -48,6 +48,13 @@ product_description:{
 Image:{
   required:true
 },
+Image1:{
+  required:true
+},
+Image2:{
+  required:true
+},
+
 Email:{
   required:true,
   email:true
@@ -84,12 +91,12 @@ product_categor:"please select the category"
     }
      function imageview1(event){
         console.log("hjbjhb")
-        document.getElementById('Imageview').style.display = 'block';
+        document.getElementById('Imageview1').style.display = 'block';
         document.getElementById('Imageview1').src=URL.createObjectURL(event.target.files[0])
     }
  function imageview2(event){
         console.log("hjbjhb")
-        document.getElementById('Imageview').style.display = 'block';
+        document.getElementById('Imageview2').style.display = 'block';
         document.getElementById('Imageview2').src=URL.createObjectURL(event.target.files[0])
     }
 
@@ -102,7 +109,7 @@ product_categor:"please select the category"
 
 
     
-        function fileValidation(id,look) { 
+        function fileValidation(id,look,img) { 
             var fileInput =  
                 document.getElementById(look); 
               
@@ -113,11 +120,13 @@ product_categor:"please select the category"
                     /(\.jpg|\.jpeg|\.jfif|\.png|\.gif)$/i; 
               
             if (!allowedExtensions.exec(filePath)) { 
+       document.getElementById(img).style.display = 'none';
     document.getElementById(id).style.display = 'block';
    fileInput.value = ''; 
                 return false; 
             }
             else{
+                  document.getElementById(img).style.display = 'block';
                   document.getElementById(id).style.display = 'none';
 
             } }

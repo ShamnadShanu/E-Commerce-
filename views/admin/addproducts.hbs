@@ -1,3 +1,17 @@
+
+<style>
+  img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
+   
+  #canvas {
+    height: 600px;
+    width: 600px;
+    background-color: #ffffff;
+    cursor: default;
+    border: 1px solid black;
+  }
+</style>
 <form class="form-horizontal"  id="validate" enctype="multipart/form-data" action="/admin/addproducts" method="POST" style="color: #fff;">
 <fieldset>
 <!-- Form Name -->
@@ -13,7 +27,7 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="product_price">PRICE</label>  
   <div class="col-md-4">
-  <input id="product_price" name="product_price" placeholder="PRICE" class="form-control input-md" type="text" >
+  <input id="product_price" type="number" name="product_price" placeholder="PRICE" class="form-control input-md" >
   </div>
 </div>
 <!-- Select Basic -->
@@ -73,7 +87,7 @@
         <br>
         <span style="display: none; color:red" id="id"> Please select an image file</span>
         <br>
-    <input id="image" name="Image" onchange="imageview(event); fileValidation('id','image');" class="input-file" type="file">
+    <input id="image" name="Image" onchange="imageview(event); fileValidation('id','image','Imageview');" class="input-file" type="file">
   </div>
 </div>
 <!-- File Button --> 
@@ -82,9 +96,9 @@
   <div class="col-md-4">
       <img  src="" id="Imageview1" style="display: none; width: 100px; hight:auto;">
         <br>
-                <span style="display: none; color:red" id="od">Please select an image file</span>
+             <span style="display: none; color:red" id="od">Please select an image file</span>
         <br>
-    <input id="second" name="Image1" onchange="imageview1(event); fileValidation('od','second');" class="input-file" accept="image/*" type="file">
+    <input id="second" name="Image1" onchange="imageview1(event); fileValidation('od','second','Imageview1');" class="input-file" type="file">
   </div>
 </div>
 <!-- File Button --> 
@@ -93,10 +107,10 @@
   <div class="col-md-4">
       <img src="" id="Imageview2" style="display: none; width: 100px; hight:auto;" >
         <br>
-                        <span style="display: none; color:red" id="ud"> Please select an image file</span>
+          <span style="display: none; color:red" id="ud"> Please select an image file</span>
 
         <br>
-    <input id="third" name="Image2" onchange="imageview2(event); fileValidation('ud','third');" class="input-file" type="file">
+    <input id="third" name="Image2" onchange="imageview2(event); fileValidation('ud','third','Imageview2');" class="input-file" type="file">
   </div>
 </div>
 
@@ -109,7 +123,47 @@
 </fieldset>
 </form>
 
+<script>
+ var canvas  = $("#canvas"),
+    context = canvas.get(0).getContext("2d"),
+    $result = $('#result');
 
+$('#fileInput').on( 'change', function(){
+    if (this.files && this.files[0]) {
+      if ( this.files[0].type.match(/^image\//) ) {
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+           var img = new Image();
+           img.onload = function() {
+             context.canvas.height = img.height;
+             context.canvas.width  = img.width;
+             context.drawImage(img, 0, 0);
+             var cropper = canvas.cropper({
+               aspectRatio: 16 / 9
+             });
+             $('#btnCrop').click(function() {
+                // Get a string base 64 data url
+                var croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png"); 
+                $result.append( $('<img>').attr('src', croppedImageDataURL) );
+             });
+             $('#btnRestore').click(function() {
+               canvas.cropper('reset');
+               $result.empty();
+             });
+           };
+           img.src = evt.target.result;
+				};
+        reader.readAsDataURL(this.files[0]);
+      }
+      else {
+        alert("Invalid file type! Please select an image file.");
+      }
+    }
+    else {
+      alert('No file(s) selected.');
+    }
+});
+</script>
 
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>

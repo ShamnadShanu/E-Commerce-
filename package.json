@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -12,7 +12,7 @@
     "datatables.net": "^1.10.24",
     "datatables.net-dt": "^1.10.24",
     "debug": "~2.6.9",
-    "express": "~4.16.1",
+    "express": "^4.16.4",
     "express-fileupload": "^1.2.1",
     "express-handlebars": "^5.2.1",
     "express-session": "^1.17.1",
@@ -26,7 +26,10 @@
     "mongo": "^0.1.0",
     "mongodb": "^3.6.4",
     "morgan": "~1.9.1",
-    "promise": "^8.1.0"
+    "paypal-rest-sdk": "^1.8.1",
+    "promise": "^8.1.0",
+    "razorpay": "^2.0.6",
+    "rest": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

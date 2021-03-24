@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="table-responsive col">
+        <div class="card bg-success shadow">
+            <div class="card-header  bg-transparent border-0">
+                <h1 class="text-white mb-0">All PRODUCTS</h1>
+                <br>
+                <a class="btn btn-primary ml-auto" style="color:#fff;" href="/admin/addproducts"> Add products</a>
+            </div>
+            <div class="table-responsive">
+                <table id="myTable" style="color: black;" style="width: 100%;"
+                    class=" table css-serial align-items-center table-dark table-flush">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" class="sort" data-sort="name"></th>
+                            <th scope="col" class="sort" data-sort="budget">Date</th>
+                            <th scope="col" class="sort" data-sort="status">Address</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col" class="sort" data-sort="completion">Payment Method</th>
+                            <th>op</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        {{#each orders}}
+                        <tr>
+                            <td></td>
+                            <td class="budget">
+                                {{this.date}}
+                            </td>
+                            <td class="budget">
+                                {{this.deliveryDetails.address}}
+                            </td>
+                            <td class="budget">
+                                {{this.totalAmount}}
+                            </td>
+                            <td>
+                                {{this.paymentMethod}}
+
+                            </td>
+                            <td class="budget">
+                                <a class="btn btn-success" href=""></a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
