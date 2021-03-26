@@ -1,53 +1,49 @@
 <div class="row">
-        <div class="col">
-          <div class="card bg-success shadow">
-            <div class="card-header bg-transparent border-0">
-              <h1 class="text-white mb-0">All USERS</h1>
-              <br>
-            </div>
-            <div class="table-responsive">
-              <table id="myTable" style="color: black;" class="table align-items-center table-dark table-flush">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col" class="sort" data-sort="name"> NAME</th>
-                    <th scope="col" class="sort" data-sort="budget">USERNAME</th>
-                    <th scope="col" class="sort" data-sort="status">PHONE</th>
-                    {{!-- <th scope="col" class="sort" data-sort="status">Status</th> --}}
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody class="list">
-                 {{#each Users}}
-                  <tr>
-                    <td class="budget">
-                      {{this.Name}}
-                    </td>
-                    <td class="budget">
-                      {{this.Username}} 
-                    </td>
-                     <td class="budget">
-                       {{this.Phone}}
-                    </td>
-                    <td class="text-right">
-                      <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          {{#if this.status}}
-                            <a class="dropdown-item" href="/admin/unblockuser/{{this._id}}">UnBlock</a>
-                          {{else}}
-                           <a class="dropdown-item" href="/admin/blockuser/{{this._id}}">Block</a>
-                          {{/if}}
-                          <a class="dropdown-item" href="/admin/removeuser/{{this._id}}">Remove</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  {{/each}}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+  <div class="col">
+    <div class="card bg-success shadow">
+      <div class="card-header bg-transparent border-0">
+        <h1 class="text-white mb-0">All USERS</h1>
+        <br>
       </div>
+      <div class="table-responsive">
+        <table id="myTable" style="color: black;" class="table align-items-center table-dark table-flush">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col" class="sort" data-sort="name">No</th>
+              <th scope="col" class="sort" data-sort="name"> NAME</th>
+              <th scope="col" class="sort" data-sort="budget">USERNAME</th>
+              <th scope="col" class="sort" data-sort="status">PHONE</th>
+              {{!-- <th scope="col" class="sort" data-sort="status">Status</th> --}}
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="list">
+            {{#each Users}}
+            <tr>
+              <td scope="row" id="count">{{math @index "+" 1}}</td>
+
+              <td class="budget">
+                {{this.Name}}
+              </td>
+              <td class="budget">
+                {{this.Username}}
+              </td>
+              <td class="budget">
+                {{this.Phone}}
+              </td>
+              <td class="text-right">
+                    {{#if this.status}}
+                    <a class="btn btn-warning" href="/admin/unblockuser/{{this._id}}">UnBlock</a>
+                    {{else}}
+                    <a class="btn btn-success" href="/admin/blockuser/{{this._id}}">Block</a>
+                    {{/if}}
+                    <a class="btn btn-danger" href="/admin/removeuser/{{this._id}}">Remove</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

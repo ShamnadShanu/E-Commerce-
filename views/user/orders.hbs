@@ -1,6 +1,7 @@
 <table id="example" class="table table-striped table-bordered" style="width:100%">
     <thead>
         <tr>
+            <th>No</th>
             <th>Date</th>
             <th>DELIVERY ADDRESS</th>
             <th>PIN</th>
@@ -13,6 +14,8 @@
     <tbody>
         {{#each Orders}}
         <tr>
+                                        <td scope="row" id="count">{{math @index "+" 1}}</td>
+
             <td>{{this.date}}</td>
             <td>t{{this.deliveryDetails.address}}</td>
             <td>{{this.deliveryDetails.pincode}}</td>

@@ -24,5 +24,26 @@ module.exports={
             let orders=await db.get().collection(collections.ORDER_COLLECTIONS).find().toArray()
             resolve(orders)
         })
+    },
+    changeOrderStatus:(data)=>{
+        console.log("data",data);
+        return new Promise(async(resolve,reject)=>{
+          let result=  await db.get().collection(collections.ORDER_COLLECTIONS).updateOne({_id:objectId(data.id)},
+           { $set:{
+                status:data.status
+            }})
+            resolve(result)
+        })
+    },
+    getOrderId:(id)=>{
+        return new Promise(async(resolve,reject)=>{
+            await db.get().collection(collections.ORDER_COLLECTIONS).findOne({_id:objectId(id)}).then((data)=>{
+                if(data){
+                    resolve(data)
+                }else{
+                    reject()
+                }
+            })
+        })
     }
 }

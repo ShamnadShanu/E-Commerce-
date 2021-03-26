@@ -22,14 +22,15 @@
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="name">First Name <span>*</span></label>
-                  <input type="text" name="fname" class="form-control" value="" id="ad-fname" aria-describedby="name" placeholder=""
-                    required>
+                  <input type="text" name="fname" class="form-control" value="" id="ad-fname" aria-describedby="name"
+                    placeholder="" required>
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="last">Last Name <span>*</span></label>
-                  <input type="text" name="lname" class="form-control" value="" id="ad-lname" aria-describedby="last" required>
+                  <input type="text" name="lname" class="form-control" value="" id="ad-lname" aria-describedby="last"
+                    required>
                 </div>
               </div>
               <div class="col-lg-12">
@@ -41,8 +42,8 @@
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="address">Address <span>*</span></label>
-                  <input name="address" type="text" class="form-control" value="" id="ad-address" aria-describedby="address"
-                    required>
+                  <input name="address" type="text" class="form-control" value="" id="ad-address"
+                    aria-describedby="address" required>
                 </div>
               </div>
               <div class="col-lg-12">
@@ -54,13 +55,15 @@
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="email">Email <span>*</span></label>
-                  <input name="email" type="email" class="form-control" value="" id="ad-email" aria-describedby="email" required>
+                  <input name="email" type="email" class="form-control" value="" id="ad-email" aria-describedby="email"
+                    required>
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="phone">Phone <span>*</span></label>
-                  <input name="mobile" type="number" class="form-control" value="" id="ad-mobile" aria-describedby="phone" required>
+                  <input name="mobile" type="number" class="form-control" value="" id="ad-mobile"
+                    aria-describedby="phone" required>
                   <input type="" name="user" value="{{user._id}}" id="" hidden>
                 </div>
               </div>
@@ -79,245 +82,263 @@
 
 
 
-              <label class="container">COD
-                <input type="radio" value="COD" name="payment-method" checked="checked">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">ONLINE
-                <input type="radio" value="ONLINE" name="payment-method">
-                <span class="checkmark"></span>
-              </label>
+              <h4> <span style="color: rgb(0, 0, 0);">PAYMENT </span></h4>
+
+              <div class="payment-method" id="payment">
+                <ul>
+                  <li>
+                    <label for="ship-standard">
+                      <input type="radio" class="shipping-select" name="payment-method" value="COD" id="payment-method"
+                        checked><span>CASH ON DELIVERY</span>
+                    </label>
+
+                  </li>
+                  <br><span style="color:  rgb(0, 2, 3); font-size: 13px;">ONLINE PAYMENT</span>
+                  <hr>
+                  <li>
+                    <label for="payment-method">
+                      <input type="radio" class="shipping-select" name="payment-method" value="ONLINE"
+                        id="payment-method"><span>RAZORPAY</span>
+                    </label>
+                  </li>
+                  <li>
+
+                    <label for="payment-method">
+                      <input type="radio" class="shipping-select" name="payment-method" value="paypal"
+                        id="payment-method"><span>PAYPAL</span>
+                    </label>
 
 
-            </div>
-            <button type="submit" value="submit" class="btn subs_btn form-control">place order</button>
-          </div>
-          {{!-- <h4> CHOOSE AN ADDRESS</h4>
-          <div class="row" style="width:100%">
-            <div class="col-lg-12">
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="phone">Phone <span>*</span></label>
-                  <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
-                </div>
-              </div>
-              <div class="col-lg-6 ml-auto">
-                <div class="form-group">
-                  <label for="phone">Phone <span>*</span></label>
-                  <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="margin-left:auto; width:100%">
-            <div class="col-lg-12">
 
-            </div>
-          </div>
-          <div class="row" style="margin-left:auto; width:100%">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="phone">Phone <span>*</span></label>
-                <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="margin-left:auto; width:100%">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="phone">Phone <span>*</span></label>
-                <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="margin-left:auto; width:100%">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="phone">Phone <span>*</span></label>
-                <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="margin-left:auto; width:100%">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="phone">Phone <span>*</span></label>
-                <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="margin-left:auto; width:100%">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="phone">Phone <span>*</span></label>
-                <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
-              </div>
-            </div>
-          </div> --}}
-          {{#each address}}
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="order_box_price">
-                <div class="row" style="margin-left:auto; width:100%">
-                  <div class="col-lg-12">
-                    <div class="form-group">
-                      <label for="phone">Fist Name <span>*</span></label>
-                      <input name="fname" type="text" value="{{this.fname}}" class="form-control" id="fname"
-                        aria-describedby="phone" required>
-                    </div>
-                  </div>
-                </div>
+                  </li>
+                </ul>
 
               </div>
+              <div name="paypal" id="paypal-button-container"> </div>
+              <button type="submit" value="submit" class="btn subs_btn form-control">place order</button>
             </div>
-            <div class="col-lg-6">
-              <div class="order_box_price">
-                <div class="row" style="margin-left:auto; width:100%">
-                  <div class="col-lg-12">
-                    <div class="form-group">
-                      <label for="phone">Last Name <span>*</span></label>
-                      <input name="lname" type="text" value="{{this.lname}}" class="form-control" id="lname"
-                        aria-describedby="phone" required>
-                    </div>
-                  </div>
-                </div>
 
-
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="order_box_price">
-                <div class="row" style="margin-left:auto; width:100%">
-                  <div class="col-lg-12">
-                    <div class="form-group">
-                      <label for="phone">Pincod <span>*</span></label>
-                      <input name="pincode" type="number" value="{{this.pincode}}" class="form-control" id="pincode"
-                        aria-describedby="phone" required>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="order_box_price">
-                <div class="row" style="margin-left:auto; width:100%">
-                  <div class="col-lg-12">
-                    <div class="form-group">
-                      <label for="phone">Address <span>*</span></label>
-                      <input name="address" type="text" value="{{this.address}}" class="form-control" id="address"
-                        aria-describedby="phone" required>
-                    </div>
-                  </div>
-                </div>
-
-
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <div class="order_box_price">
-              <div class="row" style="margin-left:auto; width:100%">
-                <div class="col-lg-12">
+            {{!-- <h4> CHOOSE AN ADDRESS</h4>
+            <div class="row" style="width:100%">
+              <div class="col-lg-12">
+                <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="phone">City/Town <span>*</span></label>
-                    <input name="city" type="text" value="{{this.town}}" class="form-control" id="town"
-                      aria-describedby="phone" required>
+                    <label for="phone">Phone <span>*</span></label>
+                    <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone"
+                      required>
+                  </div>
+                </div>
+                <div class="col-lg-6 ml-auto">
+                  <div class="form-group">
+                    <label for="phone">Phone <span>*</span></label>
+                    <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone"
+                      required>
                   </div>
                 </div>
               </div>
-
-
             </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
+            <div class="row" style="margin-left:auto; width:100%">
+              <div class="col-lg-12">
+
+              </div>
+            </div>
+            <div class="row" style="margin-left:auto; width:100%">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="phone">Phone <span>*</span></label>
+                  <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-left:auto; width:100%">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="phone">Phone <span>*</span></label>
+                  <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-left:auto; width:100%">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="phone">Phone <span>*</span></label>
+                  <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-left:auto; width:100%">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="phone">Phone <span>*</span></label>
+                  <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-left:auto; width:100%">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="phone">Phone <span>*</span></label>
+                  <input name="mobile" type="number" class="form-control" id="phone" aria-describedby="phone" required>
+                </div>
+              </div>
+            </div> --}}
+            {{#each address}}
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="order_box_price">
+                  <div class="row" style="margin-left:auto; width:100%">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="phone">Fist Name <span>*</span></label>
+                        <input name="fname" type="text" value="{{this.fname}}" class="form-control" id="fname"
+                          aria-describedby="phone" required>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="order_box_price">
+                  <div class="row" style="margin-left:auto; width:100%">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="phone">Last Name <span>*</span></label>
+                        <input name="lname" type="text" value="{{this.lname}}" class="form-control" id="lname"
+                          aria-describedby="phone" required>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="order_box_price">
+                  <div class="row" style="margin-left:auto; width:100%">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="phone">Pincod <span>*</span></label>
+                        <input name="pincode" type="number" value="{{this.pincode}}" class="form-control" id="pincode"
+                          aria-describedby="phone" required>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="order_box_price">
+                  <div class="row" style="margin-left:auto; width:100%">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="phone">Address <span>*</span></label>
+                        <input name="address" type="text" value="{{this.address}}" class="form-control" id="address"
+                          aria-describedby="phone" required>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
               <div class="order_box_price">
                 <div class="row" style="margin-left:auto; width:100%">
                   <div class="col-lg-12">
                     <div class="form-group">
-                      <label for="phone">Email <span>*</span></label>
-                      <input name="email" type="email" value="{{this.email}}" class="form-control" id="email"
+                      <label for="phone">City/Town <span>*</span></label>
+                      <input name="city" type="text" value="{{this.town}}" class="form-control" id="town"
                         aria-describedby="phone" required>
                     </div>
                   </div>
                 </div>
 
+
               </div>
             </div>
-            <div class="col-lg-6">
-              <div class="order_box_price">
-                <div class="row" style="margin-left:auto; width:100%">
-                  <div class="col-lg-12">
-                    <div class="form-group">
-                      <label for="phone">Phone <span>*</span></label>
-                      <input name="mobile" type="number" value="{{this.mobile}}" class="form-control" id="mobile"
-                        aria-describedby="phone" required>
-                    </div>
-                    <div class="col-md-12">
-                       <div class="row">
-                      <div class="col-md-6" style="color: #fff;">
-                        <p
-                          onclick="changeaddress('{{this.fname}}','{{this.lname}}','{{this.pincode}}','{{this.address}}','{{this.town}}','{{this.email}}','{{this.mobile}}')"
-                          class="btn btn-success">Use </p>
-
-                      </div>
-                      <div class="col-md-6" style="color: #fff;">
-                        <a href="/deleteAddress/{{this._id}}" class="btn btn-danger">Delete address</a>
-
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="order_box_price">
+                  <div class="row" style="margin-left:auto; width:100%">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="phone">Email <span>*</span></label>
+                        <input name="email" type="email" value="{{this.email}}" class="form-control" id="email"
+                          aria-describedby="phone" required>
                       </div>
                     </div>
-                    </div>
-                   
                   </div>
 
                 </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="order_box_price">
+                  <div class="row" style="margin-left:auto; width:100%">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="phone">Phone <span>*</span></label>
+                        <input name="mobile" type="number" value="{{this.mobile}}" class="form-control" id="mobile"
+                          aria-describedby="phone" required>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6" style="color: #fff;">
+                            <p onclick="changeaddress('{{this.fname}}','{{this.lname}}','{{this.pincode}}','{{this.address}}','{{this.town}}','{{this.email}}','{{this.mobile}}')"
+                              class="btn btn-success">Use </p>
 
+                          </div>
+                          <div class="col-md-6" style="color: #fff;">
+                            <a href="/deleteAddress/{{this._id}}" class="btn btn-danger">Delete address</a>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                </div>
 
               </div>
 
+
             </div>
-
-
+            {{/each}}
           </div>
-          {{/each}}
+
+
+
+
         </div>
-
-
-
-
+      </div>
+      <div class="row pt-5">
+        <div class="col-md-6" style="color: #fff;">
+          <a href="/add-address" class="btn btn-primary">
+            Add a new address
+          </a>
+        </div>
       </div>
     </div>
-    <div class="row pt-5">
-      <div class="col-md-6" style="color: #fff;">
-        <a href="/add-address" class="btn btn-primary">
-          Add a new address
-        </a>
-      </div>
-    </div>
-  </div>
 
-  </form>
-
-
-
-
-
+    </form>
 
 </section>
 
 
-
 <script>
   function changeaddress(fname, lname, pincode, address, town, email, mobile) {
-    document.getElementById('ad-fname').setAttribute("value",fname)
-    document.getElementById('ad-lname').setAttribute("value",lname)
-    document.getElementById('ad-pincode').setAttribute("value",pincode)
-    document.getElementById('ad-address').setAttribute("value",address)
-    document.getElementById('ad-town').setAttribute("value",town)
-    document.getElementById('ad-email').setAttribute("value",email)
-    document.getElementById('ad-mobile').setAttribute("value",mobile)
+    document.getElementById('ad-fname').setAttribute("value", fname)
+    document.getElementById('ad-lname').setAttribute("value", lname)
+    document.getElementById('ad-pincode').setAttribute("value", pincode)
+    document.getElementById('ad-address').setAttribute("value", address)
+    document.getElementById('ad-town').setAttribute("value", town)
+    document.getElementById('ad-email').setAttribute("value", email)
+    document.getElementById('ad-mobile').setAttribute("value", mobile)
   }
 </script>

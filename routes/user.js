@@ -2,6 +2,7 @@ const { response, raw, Router } = require('express');
 const e = require('express');
 var express = require('express');
 const { lchown } = require('fs');
+const { Db } = require('mongodb');
 const { USER_COLLECTION } = require('../config/collections');
 const producthelpers = require('../helpers/producthelpers');
 const { subtotal } = require('../helpers/userHelpers');
@@ -212,18 +213,18 @@ router.get('/register', verifyloggin, async (req, res) => {
 });
 router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.body.user)
-  let totalPrice = await userHelpers.total(req.body.user, true)
-  console.log(totalPrice);
-  userHelpers.placeOrder(req.body, products, totalPrice).then((orderId) => {
+  let total = await userHelpers.total(req.body.user, true)
+  console.log(total);
+  userHelpers.placeOrder(req.body, products, total).then((orderId) => {
     console.log(req.body['payment-method']);
     if (req.body['payment-method'] == 'COD') {
       res.json({ codSuccess: true })
-    } else {
-      userHelpers.generateRazorpay(orderId, totalPrice).then((response) => {
+    } else if(req.body['payment-method']=='paypal') {
+      res.json({paypal: true,total,orderId})
+    }else{
+      userHelpers.generateRazorpay(orderId, total).then((response) => {
         res.json(response)
-      }
-
-      )
+      })
     }
   })
 });
@@ -271,6 +272,13 @@ router.get('/deleteAddress/:id',(req,res)=>{
   userHelpers.deleteAddress(req.params.id,req.session.user._id).then(()=>{
     res.redirect('/register')
   })
+});
+router.get('/changeStatus/:id',(req,res)=>{
+  console.log(req.params.id);
+  userHelpers.changePaymentStatus(req.params.id).then(()=>{
+    res.redirect('/order-success')
+  })
 })
+
 
 module.exports = router;

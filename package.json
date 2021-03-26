@@ -23,6 +23,7 @@
     "image-url-validator": "^1.0.4",
     "image-zoom-on-hover": "^1.0.0",
     "js-image-zoom": "^0.7.0",
+    "just-handlebars-helpers": "^1.0.18",
     "mongo": "^0.1.0",
     "mongodb": "^3.6.4",
     "morgan": "~1.9.1",

@@ -11,18 +11,20 @@
                     class=" table css-serial align-items-center table-dark table-flush">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col" class="sort" data-sort="name"></th>
+                            <th scope="col" class="sort" data-sort="name">N0.</th>
                             <th scope="col" class="sort" data-sort="budget">Date</th>
                             <th scope="col" class="sort" data-sort="status">Address</th>
                             <th scope="col">Amount</th>
                             <th scope="col" class="sort" data-sort="completion">Payment Method</th>
-                            <th>op</th>
+                            <th>Status</th>
+                            <th>Optiond</th>
+
                         </tr>
                     </thead>
                     <tbody class="list">
                         {{#each orders}}
                         <tr>
-                            <td></td>
+                            <td scope="row" id="count">{{math @index "+" 1}}</td>
                             <td class="budget">
                                 {{this.date}}
                             </td>
@@ -36,10 +38,78 @@
                                 {{this.paymentMethod}}
 
                             </td>
-                            <td class="budget">
-                                <a class="btn btn-success" href=""></a>
+                            <td id="{{this._id}}">
+                                {{this.status}}
+                            </td>
+                            <td>
+                                {{#ifEquals status "placed"}}
+                                <div class="input-group">
+                                    <select class="custom-select" id="inputGroupSelect04"
+                                        aria-label="Example select with button addon">
+
+                                        <option value="confirm">Confirm</option>
+                                        <option value="ship">Ship</option>
+                                        <option value="delivered">Deliver</option>
+                                        <option value="cancel">Cancel</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success" type="button"
+                                            onclick="status('{{_id}}')">Submit</button>
+                                    </div>
+                                </div>
+                                {{/ifEquals}}
+                                {{#ifEquals status "Confirm"}}
+                                <div class="input-group">
+                                    <select class="custom-select" id="inputGroupSelect04"
+                                        aria-label="Example select with button addon">
+                                        <option value="ship">Ship</option>
+                                        <option value="delivered">Deliver</option>
+                                        <option value="cancel">Cancel</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            onclick="status('{{_id}}')">Submit</button>
+                                    </div>
+                                </div>
+                                {{/ifEquals}}
+                                {{#ifEquals status "Delivered"}}
+                                <h4 class="text-white btn btn-primary">Delivered</h4>
+                                {{/ifEquals}}
+                                {{#ifEquals status "Shiped"}}
+                                <div class="input-group">
+                                    <select class="custom-select" id="inputGroupSelect04"
+                                        aria-label="Example select with button addon">
+                                        <option value="delivered">Deliver</option>
+                                        <option value="cancel">Cancel</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            onclick="status('{{_id}}')">Submit</button>
+                                    </div>
+                                </div>
+                                {{/ifEquals}}
+                                {{#ifEquals status "Cancel"}}
+                                <h4 class="text-white btn btn-danger">Cancelled</h4>
+                                {{/ifEquals}}
+                                {{#ifEquals status "pending"}}
+                                <div class="input-group">
+                                    <select class="custom-select" id="inputGroupSelect04"
+                                        aria-label="Example select with button addon">
+
+                                        <option value="confirm">Confirm</option>
+                                        <option value="ship">Ship</option>
+                                        <option value="delivered">Deliver</option>
+                                        <option value="cancel">Cancel</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            onclick="status('{{_id}}')">Submit</button>
+                                    </div>
+                                </div>
+                                {{/ifEquals}}
                             </td>
                         </tr>
+
                         {{/each}}
                     </tbody>
                 </table>
@@ -47,3 +117,28 @@
         </div>
     </div>
 </div>
+<script>
+    function status(id) {
+        var e = document.getElementById('inputGroupSelect04')
+        var status = e.options[e.selectedIndex].text;
+        $.ajax({
+            method: 'post',
+            url: '/admin/changeStatus',
+            data: { status, id },
+            success: (response) => {
+                if (response.order.status === 'Confirm') {
+                    document.getElementById(id).innerHTML = "Rady to Ship"
+                }
+                else if (response.order.status === 'Deliver') {
+                    document.getElementById(id).innerHTML = "Delivered"
+                }
+                else if (response.order.status === 'Ship') {
+                    document.getElementById(id).innerHTML = "Shiped"
+                }
+                else if (response.order.status === 'Cancel') {
+                    document.getElementById(id).innerHTML = "Cancelled"
+                }
+            }
+        })
+    }
+</script>

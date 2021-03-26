@@ -208,11 +208,31 @@ router.get('/categories',verifyloggin,(req,res)=>{
   //   res.render('admin/categories',{Admin:true,category})
   // })
 });
-router.get('/all-orders',(req,res)=>{
+router.get('/all-orders',verifyloggin,(req,res)=>{
   adminHelpers.allOrders().then((orders)=>{
     console.log(orders);
     res.render('admin/all-orders',{Admin:true,orders})
   })
+});
+
+router.post("/changeStatus", (req, res) => {
+  adminHelpers.changeOrderStatus(req.body).then((response) => {
+    adminHelpers
+      .getOrderId(req.body.id)
+      .then((order) => {
+        res.json({ order });
+      })
+      .catch(() => {
+        console.log("err");
+      });
+  });
+});
+
+
+
+
+router.get('/',(req,res)=>{
+
 })
 
 module.exports = router;
