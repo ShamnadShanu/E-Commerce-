@@ -122,25 +122,32 @@ if(data){
   console.log('errr',data);
 res.redirect('/sessionErrors')
 }else{
-  console.log("fff",PHONE);
+  console.log("fff",req.body.Phone);
 
   client
   .verify
   .services(twlio.serviceSID)
   .verificationChecks
   .create({
-    to: "+91" + PHONE,
+    to: "+91"+req.body.Phone,
     code: req.body.otp
   }).then((verification_check) => {
     console.log(verification_check.status)
-    userHelpers.doSignup(req.body).then((response) => {
-      console.log(response);
-      res.redirect('/session')
-    }).catch((err) => {
-      req.session.existEmail = true
-      res.redirect('/signup')
-    })
-
+    if(verification_check.status=='approved'){
+      userHelpers.doSignup(req.body).then((response) => {
+        console.log(response);
+        req.session.response=response
+        res.redirect('/session')
+      }).catch((err) => {
+        req.session.existEmail = true
+        res.redirect('/signup')
+      })
+  
+    }else{
+      console.log('potti');
+      res.json({thetti:true})
+    }
+   
   })
 }
   })
@@ -314,13 +321,28 @@ router.get('/changeStatus/:id', (req, res) => {
 
 
 router.post('/getOtp',(req, res) => {
-  PHONE = req.body.No
-   userHelpers.OtpRequest(PHONE).then((data)=>{
-    console.log(data);
-    if(data){
-      res.json(true)
-
-    }else{
+  console.log('hhhhhh');
+  PHONE = req.body.Phone
+    userHelpers.OtpRequest(PHONE).then((data)=>{
+      console.log(data);
+      if(data){
+        res.json(true)
+  
+      }else{
+        client.verify.services(twlio.serviceSID)
+        .verifications
+        .create({
+          to: "+91" + req.body.No,
+          channel: 'sms'
+        })
+        .then((verification) => {
+          console.log(verification.sid);
+        }).catch((err)=>{
+  console.log(err);
+        })
+      }
+     }).catch((err)=>{
+  
       client.verify.services(twlio.serviceSID)
       .verifications
       .create({
@@ -329,27 +351,73 @@ router.post('/getOtp',(req, res) => {
       })
       .then((verification) => {
         console.log(verification.sid);
-      }).catch((err)=>{
-console.log(err);
       })
-    }
-   }).catch((err)=>{
-
-    client.verify.services(twlio.serviceSID)
-    .verifications
-    .create({
-      to: "+91" + req.body.No,
-      channel: 'sms'
-    })
-    .then((verification) => {
-      console.log(verification.sid);
-    })
+    
+     })
   
-   })
+
+});
+
+
+router.post('/getLogin',(req, res) => {
+  console.log('hbhh');
+  console.log("hi",req.body.Phone);
+    userHelpers.OtpRequest(req.body.Phone).then((data)=>{
+      console.log(data);
+      if(data){
+        client.verify.services(twlio.serviceSID)
+        .verifications
+        .create({
+          to: "+91" + req.body.Phone,
+          channel: 'sms'
+        })
+        .then((verification) => {
+          console.log(verification);
+          console.log(verification.sid);
+          res.json({ok:true})
+        }).catch((err)=>{
+  console.log(err);
+        })
+      }else{
+           res.json({err:true})
+
+      }
+     }).catch((err)=>{
+  res.json({err:true})
+     })
+  
+  
 
 
 
 });
+router.post('/checkOTP',(req,res)=>{
+  console.log(req.body.otp);
+  console.log(req.body.Phone)
+  client
+  .verify
+  .services(twlio.serviceSID)
+  .verificationChecks
+  .create({
+    to: "+91"+req.body.Phone,
+    code: req.body.otp
+  }).then((verification_check) => {
+    console.log(verification_check.status)
+    if(verification_check.status=='approved'){
+      userHelpers.dologinwithNO(req.body).then((response) => {
+        console.log(response);
+        req.session.response=response
+        res.redirect('/session')
+      }).catch((err) => {
+        res.redirect('/sessionErrors')
+      })
+  
+    }else{
+      console.log('potti');
+      res.json({thetti:true})
+    }
+})
+})
 
 // router.post('/phone',(req,res)=>{
 //   client.verify.services(twlio.serviceSID)
@@ -367,17 +435,18 @@ console.log(err);
 
 router.get('/sessionErrors',(req,res)=>{
   req.session.existEmail = true
-  res.redirect('/signup')
+  res.json({thetti:true})
+
 });
 router.get('/session',(req,res)=>{
-  req.session.user = response
+  req.session.user=req.session.response
   req.session.userLoggedin = true
-  res.json(true)
-
-
-  res.redirect('/')
+  res.json({ok:true})
 })
 
+router.get('/profile',(req,res)=>{
+  res.render('user/userProfile',{User:true})
+})
 
 
 

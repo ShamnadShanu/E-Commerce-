@@ -284,7 +284,7 @@ resolve({remove:true})
 placeOrder:(order,products,total)=>{
 return new Promise((resolve,reject)=>{
 console.log(order,products,total);
-let status=order['payment-method']==='COD'?'placed':'pending'
+let status=order['payment-method']==='COD'?'Placed':'Pending'
 let orderObj={
     deliveryDetails:{
         mobile:order.mobile,
@@ -389,7 +389,7 @@ resolve(order)
           .updateOne({_id:objectId(orderId)}, 
           {
               $set:{
-                  status:'placed'
+                  status:'Placed'
               }
           }
           ).then((response)=>{
@@ -442,5 +442,10 @@ db.get().collection(collections.ADDRESS_COLLECTIONS).insertOne(details).then((re
   }
       })
   },
-
+  dologinwithNO:(Data)=>{
+      return new Promise(async(resolve,reject)=>{
+         let user=await db.get().collection(collections.USER_COLLECTION).findOne({Phone:Data.Phone})
+         resolve(user)
+      })
+  }
 }

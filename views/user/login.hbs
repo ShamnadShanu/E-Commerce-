@@ -7,7 +7,7 @@
                         <h2>log in your account</h2>
                         <p>Log in to your account to discovery all great features</p>
                     </div>
-                    <form action="/login" method="POST" id="validate" class="login_form row">
+                    <form action="/login" method="POST" id="Validate" class="login_form row">
                         <div class="col-lg-12 form-group">
                             <input class="form-control" name="Email" type="text" placeholder="Email">
                         </div>
@@ -19,7 +19,7 @@
                             <p style="color: red;">{{logginError}}</p>
                         </div>
                         {{/if}}
-                          {{#if block}}
+                        {{#if block}}
                         <div>
                             <p style="color: red;">{{block}}</p>
                         </div>
@@ -43,4 +43,138 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <div class="login_inner">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mt-5">
+                        <img style="width: 50px; height: 50px;" src="../../img/1280px-Sport_records_icon_OR.svg.png"
+                            alt="">
+                    </div>
+
+                    <div class="login_title">
+                        <h2>OTP Login</h2>
+                    </div>
+                    <form action="/checkOTP" method="POST" id="validate" class="login_form row pt-5">
+                        <div class="row col-lg-12">
+                            <div class="col-lg-10 form-group ">
+                                <input class="form-control" id="NUM" name="Phone" type="number" placeholder="Phone">
+                                <p id="NOT" style="color: red; display: none;">Number is not Registered</p>
+                            </div>
+                            <div class="col-lg-2 mt-1 ml-auto form-group">
+                                <p onclick="getOTP()" class="btn btn-outline-primary">Get OTP</p>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-10 form-group ml-auto" id="OTP" style="display: none;">
+                            <input class="form-control" id="kitti" name="otp" type="number" placeholder="OTP">
+                            <p style="color: red; display: none;" id="invalid">Invalid OTP</p>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <button type="submit" value="submit" class="btn update_btn form-control">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
 </section>
+<script>
+    function getOTP() {
+        let Phone = document.getElementById('NUM').value
+        if (Phone) {
+            document.getElementById('OTP').style.display = 'block'
+            document.getElementById('NOT').style.display = 'none'
+
+
+
+
+            $.ajax({
+                url: "/getLogin",
+                data: {
+                    Phone
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.ok) {
+                        document.getElementById('OTP').style.display = 'none'
+                        document.getElementById('OTP').style.display = 'block'
+                        let OtP = document.getElementById('kitti').value
+                    }
+                    if (response.err) {
+                        document.getElementById('NOT').style.display = 'block'
+                        document.getElementById('OTP').style.display = 'none'
+                    }
+
+                }
+            })
+        }
+
+    }
+
+</script>
+<script>
+    $(document).ready(() => {
+        $('#validate').validate({
+            rules: {
+
+                OTP: {
+                    required: true
+                },
+                Phone: {
+                    required: true
+                }
+            },
+            submitHandler: function (form, e) {
+                console.l
+                e.preventDefault()
+                let otpIs = document.getElementById('kitti').value
+
+
+        console.log(otpIs)
+        if (otpIs) {
+                $.ajax({
+                    url: "/checkOTP",
+                    data: $('#validate').serialize(),
+                    method: 'post',
+                    success: (response) => {
+                        if (response.thetti) {
+                            document.getElementById('invalid').style.display = 'block'
+                        }
+                        if (response.ok) {
+                            document.getElementById('invalid').style.display = 'none'
+                            location.href = '/'
+                        }
+                    }
+
+                })
+            
+
+
+        }
+            }
+        })
+    })
+</script>

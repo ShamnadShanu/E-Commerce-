@@ -2,9 +2,8 @@
     <div class="table-responsive col">
         <div class="card bg-success shadow">
             <div class="card-header  bg-transparent border-0">
-                <h1 class="text-white mb-0">All PRODUCTS</h1>
+                <h1 class="text-white mb-0">All Orders</h1>
                 <br>
-                <a class="btn btn-primary ml-auto" style="color:#fff;" href="/admin/addproducts"> Add products</a>
             </div>
             <div class="table-responsive">
                 <table id="myTable" style="color: black;" style="width: 100%;"
@@ -42,15 +41,15 @@
                                 {{this.status}}
                             </td>
                             <td>
-                                {{#ifEquals status "placed"}}
+                                {{#ifEquals status "Placed"}}
                                 <div class="input-group">
                                     <select class="custom-select" id="inputGroupSelect04"
                                         aria-label="Example select with button addon">
 
-                                        <option value="confirm">Confirm</option>
-                                        <option value="ship">Ship</option>
-                                        <option value="delivered">Deliver</option>
-                                        <option value="cancel">Cancel</option>
+                                        <option value="Confirmed">Confirm</option>
+                                        <option value="Shiped">Ship</option>
+                                        <option value="Delivered">Deliver</option>
+                                        <option value="Cancelled">Cancel</option>
                                     </select>
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-success" type="button"
@@ -62,9 +61,9 @@
                                 <div class="input-group">
                                     <select class="custom-select" id="inputGroupSelect04"
                                         aria-label="Example select with button addon">
-                                        <option value="ship">Ship</option>
-                                        <option value="delivered">Deliver</option>
-                                        <option value="cancel">Cancel</option>
+                                        <option value="Shiped">Ship</option>
+                                        <option value="Delivered">Deliver</option>
+                                        <option value="Cancel">Cancel</option>
                                     </select>
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button"
@@ -72,15 +71,15 @@
                                     </div>
                                 </div>
                                 {{/ifEquals}}
-                                {{#ifEquals status "Delivered"}}
+                                {{#ifEquals status "Deliver"}}
                                 <h4 class="text-white btn btn-primary">Delivered</h4>
                                 {{/ifEquals}}
-                                {{#ifEquals status "Shiped"}}
+                                {{#ifEquals status "Ship"}}
                                 <div class="input-group">
                                     <select class="custom-select" id="inputGroupSelect04"
                                         aria-label="Example select with button addon">
-                                        <option value="delivered">Deliver</option>
-                                        <option value="cancel">Cancel</option>
+                                        <option value="Delivered">Deliver</option>
+                                        <option value="Cancelled">Cancel</option>
                                     </select>
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button"
@@ -91,13 +90,13 @@
                                 {{#ifEquals status "Cancel"}}
                                 <h4 class="text-white btn btn-danger">Cancelled</h4>
                                 {{/ifEquals}}
-                                {{#ifEquals status "pending"}}
+                                {{#ifEquals status "Pending"}}
                                 <div class="input-group">
                                     <select class="custom-select" id="inputGroupSelect04"
                                         aria-label="Example select with button addon">
 
-                                        <option value="confirm">Confirm</option>
-                                        <option value="ship">Ship</option>
+                                        <option value="confirmed">Confirm</option>
+                                        <option value="Shiped">Ship</option>
                                         <option value="delivered">Deliver</option>
                                         <option value="cancel">Cancel</option>
                                     </select>

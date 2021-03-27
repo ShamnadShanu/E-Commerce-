@@ -23,14 +23,17 @@
                                 <p id="already" style="color: red; display: none;">This number is already taken</p>
                             </div>
                             <div class="col-lg-2 mt-1 ml-auto form-group">
-                                <p onclick="getOtp()" class="btn btn-outline-primary" >Get OTP</p>
+                                <p onclick="getOtp()" class="btn btn-outline-primary">Get OTP</p>
                             </div>
                             <div class="col-lg-4 form-group ml-auto" id="otp" style="display: none;">
-                                <input class="form-control"  id="kitti"  name="otp" type="number" placeholder="OTP">
+                                <input class="form-control" id="kitti" name="otp" type="number" placeholder="OTP">
+                                                            <p style="color: red; display: none;" id="invalid">Invalid OTP</p>
+
                             </div>
                         </div>
                         <div class="col-lg-12 form-group">
-                            <input class="form-control" id="pass" name="Password" type="password" placeholder="Password">
+                            <input class="form-control" id="pass" name="Password" type="password"
+                                placeholder="Password">
                         </div>
                         <a href="/login">
                             Already have an account ?
@@ -48,49 +51,59 @@
 <script>
     function getOtp() {
         let No = document.getElementById('No').value
-        document.getElementById('otp').style.display = 'block'
-        document.getElementById('already').style.display='none'
+        if (No) {
+            document.getElementById('otp').style.display = 'block'
+            document.getElementById('already').style.display = 'none'
 
 
-        $.ajax({
-            url: "/getOtp",
-            data: {
-                No
-            },
-            method: 'post',
-          success: (response) => {
-document.getElementById('already').style.display='block'
-document.getElementById('otp').style.display = 'none'
-         }
-        })
+
+
+            $.ajax({
+                url: "/getOtp",
+                data: {
+                    No
+                },
+                method: 'post',
+                success: (response) => {
+                    document.getElementById('already').style.display = 'block'
+                    document.getElementById('otp').style.display = 'none'
+                }
+            })
+        }
 
     }
 
-    
+
 </script>
 <script>
-    $('#Validate').submit((e)=>{
+    $('#Validate').submit((e) => {
         e.preventDefault()
-        let otpIs=document.getElementById('kitti').value
-                let pass=document.getElementById('pass').value
+        let otpIs = document.getElementById('kitti').value
+        let pass = document.getElementById('pass').value
 
 
         console.log(otpIs)
-        if(otpIs){
-            if(pass){
-  $.ajax({
-                url:"/signup",
-                data:$('#Validate').serialize(),
-                method:'post',
-                success:()=>{
-                location.href='/'
-                }
-                
-            })
+        if (otpIs) {
+            if (pass) {
+                $.ajax({
+                    url: "/signup",
+                    data: $('#Validate').serialize(),
+                    method: 'post',
+                    success: (response) => {
+                        if (response.thetti) {
+                            document.getElementById('invalid').style.display = 'block'
+                        }
+                        if (response.ok) {
+                            document.getElementById('invalid').style.display = 'none'
+                            location.href = '/'
+                        }
+                    }
+
+                })
             }
-          
+
 
         }
-        
+
     })
 </script>
