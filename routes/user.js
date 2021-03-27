@@ -3,11 +3,21 @@ const e = require('express');
 var express = require('express');
 const { lchown } = require('fs');
 const { Db } = require('mongodb');
+const { LogPage } = require('twilio/lib/rest/serverless/v1/service/environment/log');
 const { USER_COLLECTION } = require('../config/collections');
 const producthelpers = require('../helpers/producthelpers');
+const { serviceSID } = require('../helpers/twlio');
+const twlio = require('../helpers/twlio');
 const { subtotal } = require('../helpers/userHelpers');
 var router = express.Router();
 var userHelpers = require('../helpers/userHelpers')
+let PHONE
+
+
+
+const client = require('twilio')(twlio.accountSID, twlio.authToken)
+
+
 var verifyloggin = (req, res, next) => {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
   if (req.session.userLoggedin) {
@@ -104,19 +114,38 @@ router.get('/signup', (req, res) => {
   } else {
     res.render('user/signup', { User: true })
   }
-});
+})
 router.post('/signup', (req, res) => {
   console.log(req.body);
-  userHelpers.doSignup(req.body).then((response) => {
-    console.log(response);
-    req.session.user = response
-    req.session.userLoggedin = true
+  userHelpers.isEmail(req.body.Email).then((data)=>{
+if(data){
+  console.log('errr',data);
+res.redirect('/sessionErrors')
+}else{
+  console.log("fff",PHONE);
 
-    res.redirect('/')
-  }).catch((err) => {
-    req.session.existEmail = true
-    res.redirect('/signup')
+  client
+  .verify
+  .services(twlio.serviceSID)
+  .verificationChecks
+  .create({
+    to: "+91" + PHONE,
+    code: req.body.otp
+  }).then((verification_check) => {
+    console.log(verification_check.status)
+    userHelpers.doSignup(req.body).then((response) => {
+      console.log(response);
+      res.redirect('/session')
+    }).catch((err) => {
+      req.session.existEmail = true
+      res.redirect('/signup')
+    })
+
   })
+}
+  })
+ 
+
 });
 router.get('/logout', (req, res) => {
   req.session.userLoggedin = false
@@ -219,9 +248,9 @@ router.post('/place-order', async (req, res) => {
     console.log(req.body['payment-method']);
     if (req.body['payment-method'] == 'COD') {
       res.json({ codSuccess: true })
-    } else if(req.body['payment-method']=='paypal') {
-      res.json({paypal: true,total,orderId})
-    }else{
+    } else if (req.body['payment-method'] == 'paypal') {
+      res.json({ paypal: true, total, orderId })
+    } else {
       userHelpers.generateRazorpay(orderId, total).then((response) => {
         res.json(response)
       })
@@ -268,17 +297,89 @@ router.post('/add-address', (req, res) => {
   })
 }
 );
-router.get('/deleteAddress/:id',(req,res)=>{
-  userHelpers.deleteAddress(req.params.id,req.session.user._id).then(()=>{
+router.get('/deleteAddress/:id', (req, res) => {
+  userHelpers.deleteAddress(req.params.id, req.session.user._id).then(() => {
     res.redirect('/register')
   })
 });
-router.get('/changeStatus/:id',(req,res)=>{
+router.get('/changeStatus/:id', (req, res) => {
   console.log(req.params.id);
-  userHelpers.changePaymentStatus(req.params.id).then(()=>{
+  userHelpers.changePaymentStatus(req.params.id).then(() => {
     res.redirect('/order-success')
   })
 })
+
+
+
+
+
+router.post('/getOtp',(req, res) => {
+  PHONE = req.body.No
+   userHelpers.OtpRequest(PHONE).then((data)=>{
+    console.log(data);
+    if(data){
+      res.json(true)
+
+    }else{
+      client.verify.services(twlio.serviceSID)
+      .verifications
+      .create({
+        to: "+91" + req.body.No,
+        channel: 'sms'
+      })
+      .then((verification) => {
+        console.log(verification.sid);
+      }).catch((err)=>{
+console.log(err);
+      })
+    }
+   }).catch((err)=>{
+
+    client.verify.services(twlio.serviceSID)
+    .verifications
+    .create({
+      to: "+91" + req.body.No,
+      channel: 'sms'
+    })
+    .then((verification) => {
+      console.log(verification.sid);
+    })
+  
+   })
+
+
+
+});
+
+// router.post('/phone',(req,res)=>{
+//   client.verify.services(twlio.serviceSID)
+//   .verifications
+//   .create({to:"+91"+req.body.Mobile,
+//    channel: 'sms'})
+//   .then(verification => console.log(verification.sid));
+// })
+
+
+
+
+
+
+
+router.get('/sessionErrors',(req,res)=>{
+  req.session.existEmail = true
+  res.redirect('/signup')
+});
+router.get('/session',(req,res)=>{
+  req.session.user = response
+  req.session.userLoggedin = true
+  res.json(true)
+
+
+  res.redirect('/')
+})
+
+
+
 
 
 module.exports = router;

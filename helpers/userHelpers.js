@@ -29,6 +29,32 @@ return new Promise(async(resolve,reject)=>{
     }
     
 })
+},
+OtpRequest: (phone) => {
+    return new Promise(async (resolve, reject) => {
+        console.log('kll'+phone);
+
+
+        let user = await db.get().collection(collections.USER_COLLECTION).findOne({Phone:phone })
+        console.log(user);
+        if (user) {
+            let stat = user.Status
+            if (!stat) {
+                console.log(user.Phone);
+                resolve(user.Phone)
+            }
+            else {
+                reject()
+            }
+
+        }
+        else {
+            reject()
+        }
+
+
+
+    })
 },dologin:(Data)=>{
               return new Promise(async(resolve,reject)=>{
    let response={}
@@ -403,6 +429,17 @@ db.get().collection(collections.ADDRESS_COLLECTIONS).insertOne(details).then((re
             'client_secret': 'EKCrRJFoBByPyAd0_5IGh8PNw9GodmhvNFFh7J2CvB7MOxz07Yi_6XXosgpg1y5Wzi7SJ6mzIbmJJYN3'
           });
 
+      })
+  },
+  isEmail:(Email)=>{
+      console.log('gfgf');
+      return new Promise(async(resolve,reject)=>{
+        let exist=await db.get().collection(collections.USER_COLLECTION).findOne({Email:Email})
+  if(exist){
+     resolve(exist)
+  }else{
+      resolve(false)
+  }
       })
   },
 

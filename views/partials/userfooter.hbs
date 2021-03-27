@@ -241,7 +241,7 @@ var rzp1 = new Razorpay(options);
 
 <script>
 $(document).ready(()=>{
-  $('#validate').validate({
+  $('#Validate').validate({
     rules:{
 Email:{
   required:true,
@@ -263,6 +263,9 @@ Username:{
 Phone:{
  minlength: 10,
  maxlength: 10,
+  required:true
+},
+OTP:{
   required:true
 }
     }
