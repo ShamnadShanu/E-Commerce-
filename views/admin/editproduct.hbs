@@ -1,3 +1,5 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
+
 <form class="form-horizontal"  id="validate" enctype="multipart/form-data" action="/admin/editproduct/{{product._id}}" method="POST" style="color: #fff;">
 <fieldset>
 <!-- Form Name -->
@@ -74,30 +76,67 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">Main_Image</label>
   <div class="col-md-4">
-        <img src="../../productImages/{{product._id}}.jpg" id="Imageview" style="width: 100px; hight:auto;" >
+        <img src="../../productImages/{{product._id}}.jpg" id="Imageview" class="img1Disp"  style="width: 100px; hight:auto;" >
         <br>
+                <span style="display: none; color:red" id="id"> Please select an image file</span>
+
         <br>
-    <input id="filebutton" name="Image" onchange="imageview(event)" class="input-file" type="file">
+    <input id="image" name="Image" onclick="firstImage()" onchange="imageview(event); fileValidation('id','image','Imageview');"
+          class="input-file" type="file">
+              <textarea name="base1" hidden id="imageBase64Data1" cols="30" rows="10"></textarea>
+
   </div>
 </div>
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Crop Image</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="result"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="load" class="btn btn-primary save">Save
+              changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 <!-- File Button --> 
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">Second Image</label>
   <div class="col-md-4">
-      <img src="../../productImages/{{product._id}}1.jpg" id="Imageview1" alt="no image " style="width: 100px; hight:auto;" >
+      <img src="../../productImages/{{product._id}}1.jpg" id="Imageview1" alt="no image " class="img2Disp"  style="width: 100px; hight:auto;" >
         <br>
+                  <span style="display: none; color:red" id="od">Please select an image file</span>
+
         <br>
-    <input id="filebutton" name="Image1" onchange="imageview1(event)" class="input-file" type="file">
+    <input id="second" onclick="secondImage()" name="Image1" onchange="imageview1(event); fileValidation('od','second','Imageview1');"
+            class="input-file" type="file">
+                          <textarea name="base2" hidden id="imageBase64Data2" cols="30" rows="10"></textarea>
+
+ 
   </div>
 </div>
 <!-- File Button --> 
 <div class="form-group">
   <label class="col-md-4 control-label" for="filebutton">Third Image</label>
   <div class="col-md-4">
-      <img src="../../productImages/{{product._id}}2.jpg" id="Imageview2" alt="no image " style="width: 100px; hight:auto;" >
+      <img src="../../productImages/{{product._id}}2.jpg" id="Imageview2" alt="no image " class="img3Disp"  style="width: 100px; hight:auto;" >
         <br>
+                  <span style="display: none; color:red" id="ud"> Please select an image file</span>
+
         <br>
-    <input id="filebutton" name="Image2" onchange="imageview2(event)" class="input-file" type="file">
+    <input id="third" name="Image2" onclick="thirdImage()" onchange="imageview2(event)" class="input-file" type="file">
+                  <textarea name="base3" hidden id="imageBase64Data3" cols="30" rows="10"></textarea>
+
   </div>
 </div>
 
@@ -121,3 +160,150 @@
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 {{!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> --}}
+<script>
+    function firstImage() {
+    console.log('clickiyea...')
+    let result = document.querySelector('.result'),
+      save = document.querySelector('.save'),
+      cropped = document.querySelector('.img1Disp'),//imagePreview
+      upload = document.querySelector('#image'),//input Id
+      cropper = '';
+    upload.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        // start file reader
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target.result) {
+            // create new image
+            $("#exampleModalCenter").modal("show");
+            let img = document.createElement('img');
+            img.id = 'image';
+            img.src = e.target.result
+            // clean result before
+            result.innerHTML = '';
+            // append new image
+            result.appendChild(img);
+            // init cropper
+            cropper = new Cropper(img);
+          }
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+    save.addEventListener('click', (e) => {
+      e.preventDefault();
+      // get result to data uri
+      let imgSrc = cropper.getCroppedCanvas({
+        width: 300 // img disp value
+      }).toDataURL();
+      $("#exampleModalCenter").modal("hide");
+      console.log('src', imgSrc)
+      cropped.src = imgSrc;
+      console.log('imagee', imgSrc)
+      $("#imageBase64Data1").val(imgSrc);
+      var base = document.getElementById('imageBase64Data2').value
+      console.log('kittiyeaa', base)
+    });
+  }
+
+ 
+</script>
+
+<!-- assh script ends -->
+
+
+
+
+<script>
+  function secondImage() {
+    console.log('clickiyea...')
+    let result = document.querySelector('.result'),
+      save = document.querySelector('.save'),
+      cropped = document.querySelector('.img2Disp'),//imagePreview
+      upload = document.querySelector('#second'),//input Id
+      cropper = '';
+    upload.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        // start file reader
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target.result) {
+            // create new image
+            $("#exampleModalCenter").modal("show");
+            let img = document.createElement('img');
+            img.id = 'image';
+            img.src = e.target.result
+            // clean result before
+            result.innerHTML = '';
+            // append new image
+            result.appendChild(img);
+            // init cropper
+            cropper = new Cropper(img);
+          }
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+    save.addEventListener('click', (e) => {
+      e.preventDefault();
+      // get result to data uri
+      let imgSrc = cropper.getCroppedCanvas({
+        width: 300 // img disp value
+      }).toDataURL();
+      $("#exampleModalCenter").modal("hide");
+      console.log('src', imgSrc)
+      cropped.src = imgSrc;
+      console.log('imagee', imgSrc)
+      $("#imageBase64Data2").val(imgSrc);
+      var base = document.getElementById('imageBase64Data2').value
+      console.log('kittiyeaa', base)
+    });
+  }
+</script>
+
+<script>
+  function thirdImage() {
+    console.log('clickiyea...')
+    let result = document.querySelector('.result'),
+      save = document.querySelector('.save'),
+      cropped = document.querySelector('.img3Disp'),//imagePreview
+      upload = document.querySelector('#third'),//input Id
+      cropper = '';
+    upload.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        // start file reader
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target.result) {
+            // create new image
+            $("#exampleModalCenter").modal("show");
+            let img = document.createElement('img');
+            img.id = 'image';
+            img.src = e.target.result
+            // clean result before
+            result.innerHTML = '';
+            // append new image
+            result.appendChild(img);
+            // init cropper
+            cropper = new Cropper(img);
+          }
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+    save.addEventListener('click', (e) => {
+      e.preventDefault();
+      // get result to data uri
+      let imgSrc = cropper.getCroppedCanvas({
+        width: 300 // img disp value
+      }).toDataURL();
+      $("#exampleModalCenter").modal("hide");
+      console.log('src', imgSrc)
+      cropped.src = imgSrc;
+      console.log('imagee', imgSrc)
+      $("#imageBase64Data3").val(imgSrc);
+      var base = document.getElementById('imageBase64Data3').value
+      console.log('kittiyeaa', base)
+    });
+  }
+</script>

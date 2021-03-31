@@ -130,23 +130,27 @@ router.get('/editproduct/:id', verifyloggin, (req, res) => {
 router.post('/editproduct/:id', (req, res) => {
   let product = req.params.id
   productHelpers.editProduct(product, req.body).then((id) => {
-    let Image = req.files.Image
-    let Image1 = req.files.Image1
-    let Image2 = req.files.Image2
+     
+
+    var base64Str1 = req.body.base1
+    console.log('hihi');
+    var path = "./public/productImages/";
+    var optionalObj = { fileName: id, type: "jpg" };
+    base64ToImage(base64Str1, path, optionalObj);
+
+    var base64Str2 = req.body.base2
+    var path = "./public/productImages/";
+    var optionalObj = { fileName: id+'1', type: "jpg" };
+    base64ToImage(base64Str2, path, optionalObj);
+
+    var base64Str3 = req.body.base3
+    var path = "./public/productImages/";
+    var optionalObj = { fileName: id+'2', type: "jpg" };
+    base64ToImage(base64Str3, path, optionalObj);
+    res.redirect('/admin/allproducts')
 
 
-    Image.mv('./public/productImages/' + id + '.jpg', (err, done) => {
-      Image1.mv('./public/productImages/' + id + '1' + '.jpg', (err, done) => {
-        Image2.mv('./public/productImages/' + id + '2' + '.jpg', (err, done) => {
-          if (!err) {
-            res.redirect('/admin/allproducts')
-          } else {
-            res.redirect('/admin/addproducts')
-            req.session.wrong = 'something wrong please try again'
-          }
-        })
-      })
-    })
+   
   })
 });
 router.get('/blockuser/:id', verifyloggin, (req, res) => {
