@@ -127,15 +127,22 @@
             success: (response) => {
                 if (response.order.status === 'Confirm') {
                     document.getElementById(id).innerHTML = "Rady to Ship"
+                                        location.reload()
+
                 }
                 else if (response.order.status === 'Deliver') {
                     document.getElementById(id).innerHTML = "Delivered"
+                                        location.reload()
+
                 }
                 else if (response.order.status === 'Ship') {
                     document.getElementById(id).innerHTML = "Shiped"
+                                        location.reload()
+
                 }
                 else if (response.order.status === 'Cancel') {
                     document.getElementById(id).innerHTML = "Cancelled"
+                    location.reload()
                 }
             }
         })

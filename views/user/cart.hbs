@@ -20,7 +20,8 @@
                     <div class="media">
                       <div class="d-flex">
                         <a href="/single/{{this.products._id}}">
-                          <img style="width: 102px;height:123px;" src="../productImages/{{this.products._id}}.jpg" alt="">
+                          <img style="width: 102px;height:123px;" src="../productImages/{{this.products._id}}.jpg"
+                            alt="">
                         </a>
                       </div>
                       <div class="media-body">
@@ -31,17 +32,17 @@
                   <td>
                     <p class="red"> Rs.{{this.products.product_price}}</p>
                   </td>
-                   <td>
+                  <td>
                     <p class="red"> Rs.<span id="{{this.products._id}}1">{{this.sub}}</span></p>
                   </td>
--                  <td>
+                  <td>
                     <div style="width: 53px;" class="quantity">
                       <div class="custom">
-                        <button onclick="change('{{this._id}}','{{this.products._id}}','{{../user._id}}',-1)" class="btn btn-danger"
-                          type="button"><i class="icon_minus-06"></i></button>
+                        <button onclick="change('{{this._id}}','{{this.products._id}}','{{../user._id}}',-1)"
+                          class="btn btn-danger" type="button"><i class="icon_minus-06"></i></button>
                         <span style="font-size: large;" id="{{this.products._id}}">{{this.quantity}}</span>
-                        <button onclick="change('{{this._id}}','{{this.products._id}}','{{../user._id}}',1)" class="btn btn-success"
-                          type="button"><i class="icon_plus"></i></button>
+                        <button onclick="change('{{this._id}}','{{this.products._id}}','{{../user._id}}',1)"
+                          class="btn btn-success" type="button"><i class="icon_plus"></i></button>
                       </div>
                     </div>
                   </td>
@@ -89,8 +90,8 @@
               </div>
               <div class="media-body">
                 <h6>
-            Rs.<span id="total">{{hi.total}}</span> 
-                  </h6>
+                  Rs.<span id="total">{{hi.total}}</span>
+                </h6>
               </div>
             </div>
             <div class="media">
@@ -119,7 +120,7 @@
               Total
             </div>
             <div class="float-right">
-           Rs.<span id="total1">{{hi.total}}</span>
+              Rs.<span id="total1">{{hi.total}}</span>
             </div>
           </div>
         </div>

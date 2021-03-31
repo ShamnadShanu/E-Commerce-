@@ -1,0 +1,83 @@
+<div class="content-wrapper">
+    <div class="content">
+        <div class="info-box">
+            <div class="row">
+                <h1 style="color: #fff;">SALES REPORT</h1>
+                <div class="col-lg-12 m-b-3">
+                    <br>
+                    <div class="table-responsive ">
+                        <div class="container">
+                            <form>
+                                <input type="date" class="mb-3" id="start" name="start"> to <input type="date" id="end"
+                                    class="mb-3" name="end">
+                                <button class="btn btn-success" type="submit" id="submit">Submit</button>
+                            </form>
+                            <table class="table " id="records_table" style="color: #fff;">
+                                <thead class="bg-inverse text-white">
+                                    <tr>
+                                        <th scope="col">N0*</th>
+                                        <th scope="col">Name*</th>
+                                        <th scope="col">Date*</th>
+                                        <th scope="col">Payment Method*</th>
+                                        <th scope="col">Total*</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                                                    {{#each data}}
+
+                                    <tr id="current" >
+                                        <td scope="row" id="count">{{math @index "+" 1}}</td>
+                                        <td>{{this.deliveryDetails.userName}}</td>
+                                      
+                                        <td>{{this.date}}</td>
+                                        <td>{{this.paymentMethod}}</td>
+                                        <td>{{this.totalAmount}}</td>
+                                    </tr>
+                                                                            {{/each}}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+    $('#submit').click(function (e) {
+        e.preventDefault()
+        let start = $('#start').val()
+        var end = $('#end').val()
+        $('#records_table').val('')
+        $.ajax({
+            method: 'post',
+            url: '/admin/salesReport',
+            data: {
+                start,
+                end
+            },
+            success: (response) => {
+                console.log(response)
+
+                $(function () {
+                    $(function () {
+                        $.each(response, function (i, item) {
+                            $('<tr>').append(
+                                $('<td>').text(i + 1),
+                                $('<td>').text(item.deliveryDetails.userName),
+                                $('<td>').text(item.date),
+                                $('<td>').text(item.paymentMethod),
+                                $('<td>').text("Rs." + item.totalAmount)).appendTo('#records_table');
+                        });
+                    });
+                });
+            }
+        })
+    })
+</script>

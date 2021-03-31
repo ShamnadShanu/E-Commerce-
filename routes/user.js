@@ -4,6 +4,7 @@ var express = require('express');
 const { lchown } = require('fs');
 const { Db } = require('mongodb');
 const { LogPage } = require('twilio/lib/rest/serverless/v1/service/environment/log');
+const { UsageRecordInstance } = require('twilio/lib/rest/supersim/v1/usageRecord');
 const { USER_COLLECTION } = require('../config/collections');
 const producthelpers = require('../helpers/producthelpers');
 const { serviceSID } = require('../helpers/twlio');
@@ -117,41 +118,41 @@ router.get('/signup', (req, res) => {
 })
 router.post('/signup', (req, res) => {
   console.log(req.body);
-  userHelpers.isEmail(req.body.Email).then((data)=>{
-if(data){
-  console.log('errr',data);
-res.redirect('/sessionErrors')
-}else{
-  console.log("fff",req.body.Phone);
+  userHelpers.isEmail(req.body.Email).then((data) => {
+    if (data) {
+      console.log('errr', data);
+      res.redirect('/sessionErrors')
+    } else {
+      console.log("fff", req.body.Phone);
 
-  client
-  .verify
-  .services(twlio.serviceSID)
-  .verificationChecks
-  .create({
-    to: "+91"+req.body.Phone,
-    code: req.body.otp
-  }).then((verification_check) => {
-    console.log(verification_check.status)
-    if(verification_check.status=='approved'){
-      userHelpers.doSignup(req.body).then((response) => {
-        console.log(response);
-        req.session.response=response
-        res.redirect('/session')
-      }).catch((err) => {
-        req.session.existEmail = true
-        res.redirect('/signup')
-      })
-  
-    }else{
-      console.log('potti');
-      res.json({thetti:true})
+      client
+        .verify
+        .services(twlio.serviceSID)
+        .verificationChecks
+        .create({
+          to: "+91" + req.body.Phone,
+          code: req.body.otp
+        }).then((verification_check) => {
+          console.log(verification_check.status)
+          if (verification_check.status == 'approved') {
+            userHelpers.doSignup(req.body).then((response) => {
+              console.log(response);
+              req.session.response = response
+              res.redirect('/session')
+            }).catch((err) => {
+              req.session.existEmail = true
+              res.redirect('/signup')
+            })
+
+          } else {
+            console.log('potti');
+            res.json({ thetti: true })
+          }
+
+        })
     }
-   
   })
-}
-  })
- 
+
 
 });
 router.get('/logout', (req, res) => {
@@ -320,16 +321,16 @@ router.get('/changeStatus/:id', (req, res) => {
 
 
 
-router.post('/getOtp',(req, res) => {
+router.post('/getOtp', (req, res) => {
   console.log('hhhhhh');
   PHONE = req.body.Phone
-    userHelpers.OtpRequest(PHONE).then((data)=>{
-      console.log(data);
-      if(data){
-        res.json(true)
-  
-      }else{
-        client.verify.services(twlio.serviceSID)
+  userHelpers.OtpRequest(PHONE).then((data) => {
+    console.log(data);
+    if (data) {
+      res.json(true)
+
+    } else {
+      client.verify.services(twlio.serviceSID)
         .verifications
         .create({
           to: "+91" + req.body.No,
@@ -337,13 +338,13 @@ router.post('/getOtp',(req, res) => {
         })
         .then((verification) => {
           console.log(verification.sid);
-        }).catch((err)=>{
-  console.log(err);
+        }).catch((err) => {
+          console.log(err);
         })
-      }
-     }).catch((err)=>{
-  
-      client.verify.services(twlio.serviceSID)
+    }
+  }).catch((err) => {
+
+    client.verify.services(twlio.serviceSID)
       .verifications
       .create({
         to: "+91" + req.body.No,
@@ -352,20 +353,20 @@ router.post('/getOtp',(req, res) => {
       .then((verification) => {
         console.log(verification.sid);
       })
-    
-     })
-  
+
+  })
+
 
 });
 
 
-router.post('/getLogin',(req, res) => {
+router.post('/getLogin', (req, res) => {
   console.log('hbhh');
-  console.log("hi",req.body.Phone);
-    userHelpers.OtpRequest(req.body.Phone).then((data)=>{
-      console.log(data);
-      if(data){
-        client.verify.services(twlio.serviceSID)
+  console.log("hi", req.body.Phone);
+  userHelpers.OtpRequest(req.body.Phone).then((data) => {
+    console.log(data);
+    if (data) {
+      client.verify.services(twlio.serviceSID)
         .verifications
         .create({
           to: "+91" + req.body.Phone,
@@ -374,81 +375,88 @@ router.post('/getLogin',(req, res) => {
         .then((verification) => {
           console.log(verification);
           console.log(verification.sid);
-          res.json({ok:true})
-        }).catch((err)=>{
-  console.log(err);
+          res.json({ ok: true })
+        }).catch((err) => {
+          console.log(err);
         })
-      }else{
-           res.json({err:true})
+    } else {
+      res.json({ err: true })
 
-      }
-     }).catch((err)=>{
-  res.json({err:true})
-     })
-  
-  
+    }
+  }).catch((err) => {
+    res.json({ err: true })
+  })
+
+
 
 
 
 });
-router.post('/checkOTP',(req,res)=>{
+router.post('/checkOTP', (req, res) => {
   console.log(req.body.otp);
   console.log(req.body.Phone)
   client
-  .verify
-  .services(twlio.serviceSID)
-  .verificationChecks
-  .create({
-    to: "+91"+req.body.Phone,
-    code: req.body.otp
-  }).then((verification_check) => {
-    console.log(verification_check.status)
-    if(verification_check.status=='approved'){
-      userHelpers.dologinwithNO(req.body).then((response) => {
-        console.log(response);
-        req.session.response=response
-        res.redirect('/session')
-      }).catch((err) => {
-        res.redirect('/sessionErrors')
-      })
-  
-    }else{
-      console.log('potti');
-      res.json({thetti:true})
-    }
+    .verify
+    .services(twlio.serviceSID)
+    .verificationChecks
+    .create({
+      to: "+91" + req.body.Phone,
+      code: req.body.otp
+    }).then((verification_check) => {
+      console.log(verification_check.status)
+      if (verification_check.status == 'approved') {
+        userHelpers.dologinwithNO(req.body).then((response) => {
+          console.log(response);
+          req.session.response = response
+          res.redirect('/session')
+        }).catch((err) => {
+          res.redirect('/sessionErrors')
+        })
+
+      } else {
+        console.log('potti');
+        res.json({ thetti: true })
+      }
+    })
 })
-})
-
-// router.post('/phone',(req,res)=>{
-//   client.verify.services(twlio.serviceSID)
-//   .verifications
-//   .create({to:"+91"+req.body.Mobile,
-//    channel: 'sms'})
-//   .then(verification => console.log(verification.sid));
-// })
 
 
-
-
-
-
-
-router.get('/sessionErrors',(req,res)=>{
+router.get('/sessionErrors', (req, res) => {
   req.session.existEmail = true
-  res.json({thetti:true})
+  res.json({ thetti: true })
 
 });
-router.get('/session',(req,res)=>{
-  req.session.user=req.session.response
+router.get('/session', (req, res) => {
+  req.session.user = req.session.response
   req.session.userLoggedin = true
-  res.json({ok:true})
+  res.json({ ok: true })
 })
 
-router.get('/profile',(req,res)=>{
-  res.render('user/userProfile',{User:true})
+router.get('/profile', verifyloggin, (req, res) => {
+  userHelpers.getUserprofiles(req.session.user._id).then((USER) => {
+    res.render('user/userProfile', { User: true,USER})
+  })
+});
+router.get('/profileAddress',verifyloggin,(req,res)=>{
+userHelpers.getAddress(req.session.user._id).then(async(Address)=>{
+  let USER=await userHelpers.getUserprofiles(req.session.user._id)
+console.log(Address);
+res.render('user/userProfileAddress',{User:true,Address,USER})
+  })
 })
-
-
-
-
+router.get('/removeAddress/:id',verifyloggin,(req, res) => {
+  userHelpers.removeAddress(req.params.id, req.session.user._id).then((response) => {
+    res.redirect('/register')
+  })
+});
+router.get('/editUser',verifyloggin,async(req,res)=>{
+let USER=await userHelpers.getUserprofiles(req.session.user._id)
+res.render('user/editProfile')
+});
+router.get('/crop',(req,res)=>{
+  res.render('user/crop')
+});
+router.get('/sample',(req,res)=>{
+  res.render('user/SAMPLE')
+})
 module.exports = router;

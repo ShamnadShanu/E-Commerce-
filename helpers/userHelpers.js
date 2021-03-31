@@ -11,6 +11,7 @@ const { NONAME, promises } = require('dns')
 const { checkServerIdentity } = require('tls')
 const Razorpay=require('razorpay')
 const { cpuUsage } = require('process')
+let moment=require('moment')
 var instance = new Razorpay({
     key_id: 'rzp_test_ngthi084Y8vNMx',
     key_secret: 'PsMhKzaBExqvsDyD1qmj7BAA',
@@ -287,6 +288,7 @@ console.log(order,products,total);
 let status=order['payment-method']==='COD'?'Placed':'Pending'
 let orderObj={
     deliveryDetails:{
+        userName:order.fname+" "+order.lname,
         mobile:order.mobile,
         address:order.address,
         pincode:order.pincode,
@@ -298,7 +300,7 @@ let orderObj={
     products:products,  
     totalAmount:total,
     status:status,
-    date:new Date()
+    date:moment(new Date()).format('L')
 }
 db.get().collection(collections.ORDER_COLLECTIONS).insertOne(orderObj).then((response)=>{
     db.get().collection(collections.CART).removeOne({user:objectId(order.user)})
@@ -322,7 +324,8 @@ allOrders:(userId)=>{
 },
 getOrderdetails:(orderId)=>{
     return new Promise(async(resolve,reject)=>{
-        let data=await db.get().collection(collections.ORDER_COLLECTIONS).aggregate([{
+        let data=await db.get().collection(collections.ORDER_COLLECTIONS).aggregate([
+            {
             $match:{_id:objectId(orderId)}
         },
         {
@@ -446,6 +449,22 @@ db.get().collection(collections.ADDRESS_COLLECTIONS).insertOne(details).then((re
       return new Promise(async(resolve,reject)=>{
          let user=await db.get().collection(collections.USER_COLLECTION).findOne({Phone:Data.Phone})
          resolve(user)
+      })
+  },
+  getUserprofiles:(userId)=>{
+      return new Promise((resolve,reject)=>{
+          db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(userId)}).then((response)=>{
+              console.log(response);
+              resolve(response)
+          })
+      })
+  },
+  removeAddress:(Id,userId)=>{
+      return new Promise((resolve,reject)=>{
+         db.get().collection(collections.ADDRESS_COLLECTIONS).removeOne({_id:objectId(Id),user:objectId(userId)}).then((response)=>{
+             console.log(response);
+             resolve()
+         })
       })
   }
 }

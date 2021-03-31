@@ -1,170 +1,300 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.0.0/cropper.min.js"></script>
+<form class="form-horizontal" id="validate" enctype="multipart/form-data" action="/admin/addproducts" method="POST"
+  style="color: #fff;">
+  <fieldset>
+    <!-- Form Name -->
+    <legend>ADD PRODUCTS</legend>
 
-<style>
-  img {
-    max-width: 100%; /* This rule is very important, please do not ignore this! */
-  }
-   
-  #canvas {
-    height: 600px;
-    width: 600px;
-    background-color: #ffffff;
-    cursor: default;
-    border: 1px solid black;
-  }
-</style>
-<form class="form-horizontal"  id="validate" enctype="multipart/form-data" action="/admin/addproducts" method="POST" style="color: #fff;">
-<fieldset>
-<!-- Form Name -->
-<legend>ADD PRODUCTS</legend>
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>
+      <div class="col-md-4">
+        <input id="product_name" name="product_name" placeholder="PRODUCT NAME" class="form-control input-md"
+          type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_price">PRICE</label>
+      <div class="col-md-4">
+        <input id="product_price" type="number" name="product_price" placeholder="PRICE" class="form-control input-md">
+      </div>
+    </div>
+    <!-- Select Basic -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_category">PRODUCT CATEGORY</label>
+      <div class="col-md-4">
+        <select id="category" size="0" name="product_category" class="form-control">
+          <option value="" disabled selected>SELECT</option>
+          {{#each categories}}
+          <option value="{{this.product_category}}">{{this.product_category}}</option>
+          {{/each}}
 
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>  
-  <div class="col-md-4">
-  <input id="product_name" name="product_name" placeholder="PRODUCT NAME" class="form-control input-md" type="text" >
-  </div>
-</div>
-<div class="form-group">
-  <label class="col-md-4 control-label" for="product_price">PRICE</label>  
-  <div class="col-md-4">
-  <input id="product_price" type="number" name="product_price" placeholder="PRICE" class="form-control input-md" >
-  </div>
-</div>
-<!-- Select Basic -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="product_category">PRODUCT CATEGORY</label>
-  <div class="col-md-4">
-    <select id="category"  size="0"  name="product_category" class="form-control">
-  <option value="" disabled selected>SELECT</option>
-  {{#each categories}}
-  <option value="{{this.product_category}}">{{this.product_category}}</option>
-      {{/each}}
-
-    </select>
-  </div>
-</div>
+        </select>
+      </div>
+    </div>
 
 
-{{!-- <!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="available_quantity">AVAILABLE QUANTITY</label>  
-  <div class="col-md-4">
-  <input id="available_quantity" name="available_quantity" placeholder="AVAILABLE QUANTITY" class="form-control input-md" ="" type="text">
-    
-  </div>
-</div> --}}
+    {{!--
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="available_quantity">AVAILABLE QUANTITY</label>
+      <div class="col-md-4">
+        <input id="available_quantity" name="available_quantity" placeholder="AVAILABLE QUANTITY"
+          class="form-control input-md"="" type="text">
 
-<!-- Textarea -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="product_name_fr">PRODUCT DESCRIPTION </label>
-  <div class="col-md-4">                     
-    <textarea class="form-control" placeholder="DESCRIPTION" id="product_name_fr"  name="product_description"></textarea>
-  </div>
-</div>
+      </div>
+    </div> --}}
 
-{{!-- <!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="percentage_discount">PERCENTAGE DISCOUNT</label>  
-  <div class="col-md-4">
-  <input id="percentage_discount" name="percentage_discount" placeholder="PERCENTAGE DISCOUNT" class="form-control input-md" ="" type="text">
-    
-  </div>
-</div> --}}
+    <!-- Textarea -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="product_name_fr">PRODUCT DESCRIPTION </label>
+      <div class="col-md-4">
+        <textarea class="form-control" placeholder="DESCRIPTION" id="product_name_fr"
+          name="product_description"></textarea>
+      </div>
+    </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Crop Image</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="result"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="load" class="btn btn-primary save">Save
+              changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-{{!-- <!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="stock_alert">STOCK ALERT</label>  
-  <div class="col-md-4">
-  <input id="stock_alert" name="stock_alert" placeholder="STOCK ALERT" class="form-control input-md" ="" type="text">
-    
-  </div>
-</div> --}}
- <!-- File Button --> 
-<div class="form-group">
-  <label class="col-md-4 control-label" for="filebutton">Main_image</label>
-  <div class="col-md-4">
-      <img src="" id="Imageview" style="display: none; width: 100px; hight:auto;">
+    {{!--
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="percentage_discount">PERCENTAGE DISCOUNT</label>
+      <div class="col-md-4">
+        <input id="percentage_discount" name="percentage_discount" placeholder="PERCENTAGE DISCOUNT"
+          class="form-control input-md"="" type="text">
+
+      </div>
+    </div> --}}
+
+    {{!--
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="stock_alert">STOCK ALERT</label>
+      <div class="col-md-4">
+        <input id="stock_alert" name="stock_alert" placeholder="STOCK ALERT" class="form-control input-md"=""
+          type="text">
+
+      </div>
+    </div> --}}
+    <!-- File Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="filebutton">Main_image</label>
+      <div class="col-md-4">
+        <img src="" class="img1Disp" id="Imageview" style="display: none; width: 100px; hight:auto;">
         <br>
         <span style="display: none; color:red" id="id"> Please select an image file</span>
         <br>
-    <input id="image" name="Image" onchange="imageview(event); fileValidation('id','image','Imageview');" class="input-file" type="file">
-  </div>
-</div>
-<!-- File Button --> 
-<div class="form-group">
-  <label class="col-md-4 control-label" for="filebutton">Second Image</label>
-  <div class="col-md-4">
-      <img  src="" id="Imageview1" style="display: none; width: 100px; hight:auto;">
-        <br>
-             <span style="display: none; color:red" id="od">Please select an image file</span>
-        <br>
-    <input id="second" name="Image1" onchange="imageview1(event); fileValidation('od','second','Imageview1');" class="input-file" type="file">
-  </div>
-</div>
-<!-- File Button --> 
-<div class="form-group">
-  <label class="col-md-4 control-label" for="filebutton">Third image</label>
-  <div class="col-md-4">
-      <img src="" id="Imageview2" style="display: none; width: 100px; hight:auto;" >
-        <br>
+        <input id="image" name="Image" onclick="firstImage()" onchange="imageview(event); fileValidation('id','image','Imageview');"
+          class="input-file" type="file">
+          <textarea name="base1" hidden id="imageBase64Data1" cols="30" rows="10"></textarea>
+      </div>
+    </div>
+
+      <!-- File Button -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="filebutton">Second Image</label>
+        <div class="col-md-4">
+          <img src="" class="img2Disp" id="Imageview1" style="display: none; width: 100px; hight:auto;">
+          <br>
+          <span style="display: none; color:red" id="od">Please select an image file</span>
+          <br>
+          <input id="second" onclick="secondImage()" name="Image1" onchange="imageview1(event); fileValidation('od','second','Imageview1');"
+            class="input-file" type="file">
+            <textarea hidden name="base2" id="imageBase64Data2" cols="30" rows="10"></textarea>
+        </div>
+      </div>
+      <!-- File Button -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="filebutton">Third image</label>
+        <div class="col-md-4">
+          <img src="" class="img3Disp" id="Imageview2" style="display: none; width: 100px; hight:auto;">
+          <br>
           <span style="display: none; color:red" id="ud"> Please select an image file</span>
 
-        <br>
-    <input id="third" name="Image2" onchange="imageview2(event); fileValidation('ud','third','Imageview2');" class="input-file" type="file">
-  </div>
-</div>
+          <br>
+          <input id="third" onclick="thirdImage()" name="Image2" onchange="imageview2(event); fileValidation('ud','third','Imageview2');"
+            class="input-file" type="file">
+            <textarea name="base3" hidden id="imageBase64Data3" cols="30" rows="10"></textarea>
+        </div>
+      </div>
 
-<!-- Button -->
-<div class="form-group">
-  <div class="col-md-4">
-    <button id="image" name="singlebutton" class="btn btn-success">ADD PRODUCT</button>
-  </div>
-  </div>
-</fieldset>
+      <!-- Button -->
+      <div class="form-group">
+        <div class="col-md-4">
+          <button id="image" name="singlebutton" class="btn btn-success">ADD PRODUCT</button>
+        </div>
+      </div>
+  </fieldset>
 </form>
 
-<script>
- var canvas  = $("#canvas"),
-    context = canvas.get(0).getContext("2d"),
-    $result = $('#result');
-
-$('#fileInput').on( 'change', function(){
-    if (this.files && this.files[0]) {
-      if ( this.files[0].type.match(/^image\//) ) {
-        var reader = new FileReader();
-        reader.onload = function(evt) {
-           var img = new Image();
-           img.onload = function() {
-             context.canvas.height = img.height;
-             context.canvas.width  = img.width;
-             context.drawImage(img, 0, 0);
-             var cropper = canvas.cropper({
-               aspectRatio: 16 / 9
-             });
-             $('#btnCrop').click(function() {
-                // Get a string base 64 data url
-                var croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png"); 
-                $result.append( $('<img>').attr('src', croppedImageDataURL) );
-             });
-             $('#btnRestore').click(function() {
-               canvas.cropper('reset');
-               $result.empty();
-             });
-           };
-           img.src = evt.target.result;
-				};
-        reader.readAsDataURL(this.files[0]);
-      }
-      else {
-        alert("Invalid file type! Please select an image file.");
-      }
-    }
-    else {
-      alert('No file(s) selected.');
-    }
-});
-</script>
 
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-{{!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> --}}
+
+
+<script>
+   function firstImage() {
+ let result = document.querySelector('.result'),
+    save = document.querySelector('.save'),
+    cropped = document.querySelector('.img1Disp'),//imagePreview
+    upload = document.querySelector('#image'),//input Id
+    cropper = '';
+  upload.addEventListener('change', (e) => {
+    if (e.target.files.length) {
+      // start file reader
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target.result) {
+          // create new image
+          $("#exampleModalCenter").modal("show");
+          let img = document.createElement('img');
+          img.id = 'image';
+          img.src = e.target.result
+          // clean result before
+          result.innerHTML = '';
+          // append new image
+          result.appendChild(img);
+          // init cropper
+          cropper = new Cropper(img);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  });
+  save.addEventListener('click', (e) => {
+    e.preventDefault();
+    // get result to data uri
+    let imgSrc = cropper.getCroppedCanvas({
+      width: 300 // img disp value
+    }).toDataURL();
+    $("#exampleModalCenter").modal("hide");
+    console.log('src', imgSrc)
+    console.log('image', cropped.src)
+    cropped.src = imgSrc;
+    console.log('imagee', cropped.src)
+    $("#imageBase64Data1").val(imgSrc);//textArea Id
+  });
+   }
+
+ 
+</script>
+
+<!-- assh script ends -->
+
+
+
+
+<script>
+  function secondImage() {
+    console.log('clickiyea...')
+    let result = document.querySelector('.result'),
+      save = document.querySelector('.save'),
+      cropped = document.querySelector('.img2Disp'),//imagePreview
+      upload = document.querySelector('#second'),//input Id
+      cropper = '';
+    upload.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        // start file reader
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target.result) {
+            // create new image
+            $("#exampleModalCenter").modal("show");
+            let img = document.createElement('img');
+            img.id = 'image';
+            img.src = e.target.result
+            // clean result before
+            result.innerHTML = '';
+            // append new image
+            result.appendChild(img);
+            // init cropper
+            cropper = new Cropper(img);
+          }
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+    save.addEventListener('click', (e) => {
+      e.preventDefault();
+      // get result to data uri
+      let imgSrc = cropper.getCroppedCanvas({
+        width: 300 // img disp value
+      }).toDataURL();
+      $("#exampleModalCenter").modal("hide");
+      console.log('src', imgSrc)
+      cropped.src = imgSrc;
+      console.log('imagee', imgSrc)
+      $("#imageBase64Data2").val(imgSrc);
+      var base = document.getElementById('imageBase64Data2').value
+      console.log('kittiyeaa', base)
+    });
+  }
+</script>
+
+<script>
+  function thirdImage() {
+    console.log('clickiyea...')
+    let result = document.querySelector('.result'),
+      save = document.querySelector('.save'),
+      cropped = document.querySelector('.img3Disp'),//imagePreview
+      upload = document.querySelector('#third'),//input Id
+      cropper = '';
+    upload.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        // start file reader
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target.result) {
+            // create new image
+            $("#exampleModalCenter").modal("show");
+            let img = document.createElement('img');
+            img.id = 'image';
+            img.src = e.target.result
+            // clean result before
+            result.innerHTML = '';
+            // append new image
+            result.appendChild(img);
+            // init cropper
+            cropper = new Cropper(img);
+          }
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+    save.addEventListener('click', (e) => {
+      e.preventDefault();
+      // get result to data uri
+      let imgSrc = cropper.getCroppedCanvas({
+        width: 300 // img disp value
+      }).toDataURL();
+      $("#exampleModalCenter").modal("hide");
+      console.log('src', imgSrc)
+      cropped.src = imgSrc;
+      console.log('imagee', imgSrc)
+      $("#imageBase64Data3").val(imgSrc);
+      var base = document.getElementById('imageBase64Data3').value
+      console.log('kittiyeaa', base)
+    });
+  }
+</script>
