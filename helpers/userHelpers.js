@@ -4,7 +4,6 @@ const { resolve, reject } = require('promise')
 var bcrypt=require('bcrypt')
 const { response } = require('express')
 const { fstat } = require('fs')
-const { use } = require('../routes/User')
 const objectId= require('mongodb').ObjectID
 const { count } = require('console')
 const { NONAME, promises } = require('dns')
