@@ -248,7 +248,8 @@ router.post('/place-order', async (req, res) => {
     if (req.body['payment-method'] == 'COD') {
       res.json({ codSuccess: true })
     } else if (req.body['payment-method'] == 'paypal') {
-      res.json({ paypal: true, total, orderId })
+      var total=req.body.total
+      res.json({ paypal: true, total,orderId })
     } else {
       userHelpers.generateRazorpay(orderId, req.body.total).then((response) => {
         res.json(response)

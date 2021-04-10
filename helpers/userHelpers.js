@@ -355,7 +355,10 @@ db.get().collection(collections.ORDER_COLLECTIONS).insertOne(orderObj).then((res
 getCartProductList:(user)=>{
     return new Promise(async(resolve,reject)=>{
         let cart=await db.get().collection(collections.CART).findOne({user:objectId(user)})
-        resolve(cart.products)
+        if(cart.products){
+            resolve(cart.products)
+ 
+        }
     })
 },
 allOrders:(userId)=>{
