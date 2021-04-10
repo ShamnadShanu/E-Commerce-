@@ -1,0 +1,50 @@
+<div class="col-md-6" style="align-items: center;">
+<div class="billing_details">
+<h2 class="reg_title">Add Address</h2>
+<form class="billing_inner row" method="POST" action="/Edit-address/{{Address._id}}" id="add-addressForm">
+<div class="col-lg-12">
+<div class="form-group">
+<label for="name">First Name <span>*</span></label>
+<input type="text" value="{{Address.fname}}" name="fname" class="form-control" id="first" aria-describedby="name" placeholder="" required>
+</div>
+</div>
+<div class="col-lg-12">
+<div class="form-group">
+<label for="last">Last Name <span>*</span></label>
+<input type="text" value="{{Address.lname}}" name="lname" class="form-control" id="last" aria-describedby="last" required>
+</div>
+</div>
+<div class="col-lg-12">
+<div class="form-group">
+<label for="cname">PIN Code <span>*</span></label>
+<input name="pincode" value="{{Address.pincode}}" class="form-control" id="name" required>
+ </div>
+</div>
+<div class="col-lg-12">
+<div class="form-group">
+<label for="address">Address <span>*</span></label>
+<input name="address" value="{{Address.address}}" type="text" class="form-control" id="address" aria-describedby="address" required>
+</div>
+</div>
+<div class="col-lg-12">
+<div class="form-group">
+<label for="ctown">City / Town <span>*</span></label>
+<input name="town" value="{{Address.town}}" class="form-control" id="town" required>
+</div>
+</div>
+<div class="col-lg-12">
+<div class="form-group">
+<label for="email">Email <span>*</span></label>
+<input name="email" value="{{Address.email}}" type="email" class="form-control" id="email" aria-describedby="email" required>
+</div>
+</div>
+<div class="col-lg-12">
+<div class="form-group">
+<label for="phone">Phone <span>*</span></label>
+<input name="mobile" value="{{Address.mobile}}" type="number" class="form-control" id="phone" aria-describedby="phone" required>
+</div>
+</div>
+<button class="btn btn-success" type="submit">Apply Changes</button>
+</form>
+</div>
+</div>

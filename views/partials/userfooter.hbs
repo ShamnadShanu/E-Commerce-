@@ -1,6 +1,5 @@
 <script src="../js/popper.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
-
 <script src="../vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
 <script src="../vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
 <script src="../vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
@@ -107,7 +106,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 </footer>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
  <script src="https://www.paypal.com/sdk/js?client-id=AV7Ecl6y4KOAOZf76k4YEWycEnjcwLCOQgzsp1ArbLICYvIwVvs3RzeNcGWyMjMXoEgh57jgRXp2wlL5&disable-funding=credit,card"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 <script>
   $(document).ready(()=>{
     $('#checkout-form').validate({
@@ -146,6 +145,7 @@ required:true
     submitHandler: function(form,e) {
 console.l
         e.preventDefault()
+        let total=document.getElementById('total1').innerHTML
         $.ajax({
             url:'/place-order',
             method:'post',
@@ -165,7 +165,7 @@ location.href='/order-success'
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: response.total
+                            value:total
                         }
                     }]
                 });
@@ -291,7 +291,6 @@ otp:{
 {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 <script src="../js/ajax.js"></script>
     <script src='../js/index.js'></script>
-
 </body>
 
 

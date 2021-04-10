@@ -98,7 +98,7 @@
     <!-- Page content -->
     <div class="container-fluid mt--6">
       <div class="row">
-        <div class="col-xl-8">
+        <div class="col-xl-6">
           <div class="card bg-default">
             <div class="card-header bg-transparent">
                 {{!-- <div class="col">
@@ -121,11 +121,15 @@
                     </li>
                   </ul>
                 </div> --}}
-                <canvas id="myChart" width="400" height="400"></canvas>
+                <canvas id="myChart" width="400px" height="400px"></canvas>
+        
             </div>
           </div>
         </div>
-  
+        <div class="col-xl-6 ml-auto mt-5">
+          <div class="ml-auto mt-5" id="chartdiv"></div>
+        </div>
+
       </div>
       <!-- Footer -->
       <footer class="footer pt-0">
@@ -194,7 +198,63 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-  </div>
+<style>
+#chartdiv {
+  width: 100%;
+  height: 300px;
+}
+
+</style>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/kelly.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<!-- Chart code -->
+<script>
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_kelly);
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+var chart = am4core.create("chartdiv", am4charts.PieChart);
+
+// Add data
+chart.data = [ {
+  "country": "Placed Orders",
+  "litres": {{Placed}}
+}, {
+  "country": "Total Orders",
+  "litres":{{Orders}}
+}, {
+  "country": "Shiped",
+  "litres": {{shipped}}
+}, {
+  "country": "Delivered",
+  "litres": {{Delivered}}
+} ];
+
+// Add and configure Series
+var pieSeries = chart.series.push(new am4charts.PieSeries());
+pieSeries.dataFields.value = "litres";
+pieSeries.dataFields.category = "country";
+pieSeries.slices.template.stroke = am4core.color("#fff");
+pieSeries.slices.template.strokeWidth = 2;
+pieSeries.slices.template.strokeOpacity = 1;
+
+// This creates initial animation
+pieSeries.hiddenState.properties.opacity = 1;
+pieSeries.hiddenState.properties.endAngle = -90;
+pieSeries.hiddenState.properties.startAngle = -90;
+
+}); // end am4core.ready()
+</script>
+
   <!-- Argon Scripts -->
   <!-- Core -->
   

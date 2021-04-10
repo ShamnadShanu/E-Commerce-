@@ -80,23 +80,25 @@ product_categor:"please select the category"
 } );
       </script>
        <script>
-        $(document).ready( function () {
-    $('#myTabl').DataTable();
+      $(document).ready(function() {
+    $('#records_table').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
 } );
       </script>
 <script>
     function imageview(event){
-        console.log("hjbjhb")
         document.getElementById('Imageview').style.display = 'block';
         document.getElementById('Imageview').src=URL.createObjectURL(event.target.files[0])
     }
      function imageview1(event){
-        console.log("hjbjhb")
         document.getElementById('Imageview1').style.display = 'block';
         document.getElementById('Imageview1').src=URL.createObjectURL(event.target.files[0])
     }
  function imageview2(event){
-        console.log("hjbjhb")
         document.getElementById('Imageview2').style.display = 'block';
         document.getElementById('Imageview2').src=URL.createObjectURL(event.target.files[0])
     }
@@ -111,22 +113,23 @@ product_categor:"please select the category"
 
     
         function fileValidation(id,look,img) { 
-            var fileInput =  
-                document.getElementById(look); 
+            var fileInput =  document.getElementById(look); 
               
             var filePath = fileInput.value; 
-          
+          console.log(fileInput)
             // Allowing file type 
             var allowedExtensions =  
-                    /(\.jpg|\.jpeg|\.jfif|\.png|\.gif)$/i; 
-              
+                    /(\.jpg|\.png|\.gif)$/i; 
+              console.log(filePath)
             if (!allowedExtensions.exec(filePath)) { 
+              console.log('kkk')
        document.getElementById(img).style.display = 'none';
     document.getElementById(id).style.display = 'block';
    fileInput.value = ''; 
                 return false; 
             }
             else{
+              console.log('lllll')
                   document.getElementById(img).style.display = 'block';
                   document.getElementById(id).style.display = 'none';
 

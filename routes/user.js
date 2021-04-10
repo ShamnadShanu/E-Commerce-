@@ -1,24 +1,11 @@
-const { response, raw, Router } = require('express');
-const e = require('express');
 var express = require('express');
-const { lchown } = require('fs');
-const { Db } = require('mongodb');
-const { LogPage } = require('twilio/lib/rest/serverless/v1/service/environment/log');
-const { UsageRecordInstance } = require('twilio/lib/rest/supersim/v1/usageRecord');
-const { USER_COLLECTION } = require('../config/collections');
+const adminHelpers = require('../helpers/adminHelpers');
 const producthelpers = require('../helpers/producthelpers');
-const { serviceSID } = require('../helpers/twlio');
 const twlio = require('../helpers/twlio');
-const { subtotal } = require('../helpers/userHelpers');
 var router = express.Router();
-var userHelpers = require('../helpers/userHelpers')
+var userHelpers = require('../helpers/userHelpers');
 let PHONE
-
-
-
 const client = require('twilio')(twlio.accountSID, twlio.authToken)
-
-
 var verifyloggin = (req, res, next) => {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
   if (req.session.userLoggedin) {
@@ -43,12 +30,15 @@ router.get('/', async function (req, res, next) {
   let Cartcount = 0
   if (req.session.user) {
     Cartcount = await userHelpers.getCount(req.session.user._id)
+    var details=userHelpers.getUserprofiles(req.session.user._id)
   }
-  producthelpers.getAllproducts().then((full) => {
+  producthelpers.getAllproducts().then(async(full) => {
 
     let products = full.products
     console.log(Cartcount);
-    res.render('user/home', { Cartcount, user: req.session.userLoggedin, products, User: true });
+    console.log(req.session.coupon,"jjjj");
+  await adminHelpers.expireOffer()
+    res.render('user/home', { Cartcount, user: req.session.userLoggedin, products, User: true ,details});
   }).catch(() => {
     console.log('errrr');
   })
@@ -137,7 +127,7 @@ router.post('/signup', (req, res) => {
           if (verification_check.status == 'approved') {
             userHelpers.doSignup(req.body).then((response) => {
               console.log(response);
-              req.session.response = response
+              req.session.response=response
               res.redirect('/session')
             }).catch((err) => {
               req.session.existEmail = true
@@ -201,7 +191,6 @@ router.get('/cart', verifyloggin, async (req, res) => {
       }
       hi.data = data
       req.session.productsss = data[0]
-      console.log(data, 'jnkn');
       res.render('user/cart', { User: true, hi, user: req.session.user })
     } else {
       res.render('user/emCart', { User: true, user: req.session.user })
@@ -232,10 +221,11 @@ router.get('/subcategory', (req, res) => {
       res.json(response)
     })
   });
-router.get('/removecart/', verifyloggin, (req, res) => {
+router.post('/remove',(req, res) => {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
 
-  producthelpers.removecart(req.query).then(() => {
+  producthelpers.removecart(req.body).then(() => {
+    res.json()
     res.redirect('/cart')
   })
 });
@@ -246,20 +236,21 @@ router.get('/register', verifyloggin, async (req, res) => {
   }
   let address = await userHelpers.getAddress(req.session.user._id)
   console.log('xx', address);
-  res.render('user/register', { User: true, total, user: req.session.user, cartItems, address })
+  let coupon=await userHelpers.getAllCoupon(req.session.user._id)
+  res.render('user/register', { User: true, total, user: req.session.user,coupon, cartItems, address })
 });
 router.post('/place-order', async (req, res) => {
+  console.log(req.body);
   let products = await userHelpers.getCartProductList(req.body.user)
-  let total = await userHelpers.total(req.body.user, true)
-  console.log(total);
-  userHelpers.placeOrder(req.body, products, total).then((orderId) => {
+  userHelpers.placeOrder(req.body, products, req.body.total).then(async(orderId) => {
+    await producthelpers.changeCouponstatus(req.body.whichCoupon,req.body.code)
     console.log(req.body['payment-method']);
     if (req.body['payment-method'] == 'COD') {
       res.json({ codSuccess: true })
     } else if (req.body['payment-method'] == 'paypal') {
       res.json({ paypal: true, total, orderId })
     } else {
-      userHelpers.generateRazorpay(orderId, total).then((response) => {
+      userHelpers.generateRazorpay(orderId, req.body.total).then((response) => {
         res.json(response)
       })
     }
@@ -323,8 +314,8 @@ router.get('/changeStatus/:id', (req, res) => {
 
 router.post('/getOtp', (req, res) => {
   console.log('hhhhhh');
-  PHONE = req.body.Phone
-  userHelpers.OtpRequest(PHONE).then((data) => {
+  PHONE = req.body.No
+  userHelpers.OtpRequest(req.body.No).then((data) => {
     console.log(data);
     if (data) {
       res.json(true)
@@ -428,6 +419,7 @@ router.get('/sessionErrors', (req, res) => {
 });
 router.get('/session', (req, res) => {
   req.session.user = req.session.response
+  req.session.coupon=req.session.coupon
   req.session.userLoggedin = true
   res.json({ ok: true })
 })
@@ -451,12 +443,69 @@ router.get('/removeAddress/:id',verifyloggin,(req, res) => {
 });
 router.get('/editUser',verifyloggin,async(req,res)=>{
 let USER=await userHelpers.getUserprofiles(req.session.user._id)
-res.render('user/editProfile')
+res.render('user/editProfile',{User:true,USER})
 });
-router.get('/crop',(req,res)=>{
-  res.render('user/crop')
-});
-router.get('/sample',(req,res)=>{
-  res.render('user/SAMPLE')
+router.post('/editUser',(req,res)=>{
+console.log(req.body);
+userHelpers.editProfile(req.session.user._id,req.body).then((response)=>{
+res.redirect('/profile')
 })
+});
+router.get('/editAddress/:id',async(req,res)=>{
+  let Address=await userHelpers.getAddressUser(req.params.id)
+  console.log(Address);
+  res.render('user/editAddress',{User:true,Address})
+});
+router.post('/Edit-address/:id',(req,res)=>{
+ console.log(req.body);
+ userHelpers.editAddress(req.params.id,req.body).then((response)=>{
+   res.redirect('/profile')
+ })
+});
+router.post('/profileUpload/:id',(req,res)=>{
+  console.log(req.files.image);
+  let id=req.params.id
+  let image=req.files.image
+  image.mv('./public/userImages/'+id+'.jpg')
+  res.redirect('/profile')
+});
+router.get('/search',(req,res)=>{
+
+res.render('user/moda',{User:true})
+});
+router.post('/applyCoupon',(req,res)=>{
+producthelpers.applyCoupon(req.body.code).then((response)=>{
+  console.log(response,"response");
+  if(response.already){
+    res.json({already:true})
+  }else if(response.discount){
+      res.json({discount:response.discount})
+
+    }else if(response.success){
+      res.json({success:true})
+
+    }else if(response.forRefferal){
+res.json({forRefferal:true})
+    }
+    else{
+      res.json({err:true})
+    }
+}).catch(()=>{
+res.json({err:true})
+})
+})
+router.get('/changePassword',(req,res)=>{
+let user=req.session.user
+res.render('user/changePassword',{User:true,user,Error:req.session.oldPass})
+req.session.oldPass=null
+})
+router.post('/changePassword',(req,res)=>{
+userHelpers.changePassword(req.body.id,req.body.old,req.body.new).then(()=>{
+  res.redirect('/profile')
+
+}).catch(()=>{
+req.session.oldPass="Password doesn't match"
+res.redirect('/changePassword')
+})
+  })
 module.exports = router;

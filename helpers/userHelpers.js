@@ -12,6 +12,9 @@ const { checkServerIdentity } = require('tls')
 const Razorpay=require('razorpay')
 const { cpuUsage } = require('process')
 let moment=require('moment')
+var voucher_codes = require('voucher-code-generator')
+const { getExpectedBodyHash } = require('twilio/lib/webhooks/webhooks')
+const { Code } = require('mongodb')
 var instance = new Razorpay({
     key_id: 'rzp_test_ngthi084Y8vNMx',
     key_secret: 'PsMhKzaBExqvsDyD1qmj7BAA',
@@ -22,8 +25,50 @@ return new Promise(async(resolve,reject)=>{
     if(!exist){
         Data.Password=await bcrypt.hash(Data.Password,10)
         console.log(Data.Password);
-        db.get().collection(collections.USER_COLLECTION).insertOne(Data).then((response)=>{
-            resolve(response.ops[0])
+       let Refferl=await db.get().collection(collections.USER_COLLECTION).findOne({referralCod:Data.refferal})
+       console.log("refferl:",Refferl);
+       if(Refferl){
+if(Refferl.forRefferal){
+    let forRefferal=await voucher_codes.generate();
+    forRefferal=forRefferal[0]
+    db.get().collection(collections.USER_COLLECTION).updateOne({referralCod:Data.refferal},{
+        $set:{
+            Refferals:parseInt(Refferl.Refferals)+1
+        },$push:{
+            forRefferal:forRefferal
+        }
+    }).then(async()=>{
+     let cod=await voucher_codes.generate();
+     let convert=cod[0]
+     console.log(convert);
+Data.signupreward=convert
+    })
+}else{
+    let forRefferal=await voucher_codes.generate();
+    forRefferal=forRefferal[0]
+    db.get().collection(collections.USER_COLLECTION).updateOne({referralCod:Data.refferal},{
+        $set:{
+            Refferals:1,
+            forRefferal:[forRefferal]
+        }
+    }).then(async()=>{
+        console.log('int');
+     let cod=await voucher_codes.generate();
+     let convert=cod[0]
+     console.log(convert);
+Data.signupreward=convert
+    })
+}
+         
+       }
+let referral=await voucher_codes.generate();
+let reff=referral[0]
+Data.referralCod=reff
+
+        db.get().collection(collections.USER_COLLECTION).insertOne(Data).then(async(response)=>{
+                //   db.get().collection(collections.COUPON_COLLECTION).insertOne({cod}).then((response)=>{
+                    resolve(response.ops[0])
+                //   })
                 })
     }else{
         reject()
@@ -197,7 +242,6 @@ return new Promise(async(resolve,reject)=>{
         }
         ]).toArray()
           if(data){
-console.log(data);
             resolve(data)
           }else{
               resolve()
@@ -410,11 +454,18 @@ db.get().collection(collections.ADDRESS_COLLECTIONS).insertOne(details).then((re
       )
   },
   getAddress:(userId)=>{
+      console.log('addressss',userId);
       return new Promise(async(resolve,reject)=>{
         let address=await db.get().collection(collections.ADDRESS_COLLECTIONS).find({user:objectId(userId)}).toArray()
         resolve(address)
       })
   },
+  getAddressUser:(adId)=>{
+    return new Promise(async(resolve,reject)=>{
+      let address=await db.get().collection(collections.ADDRESS_COLLECTIONS).findOne({_id:objectId(adId)})
+      resolve(address)
+    })
+},
   deleteAddress:(order)=>{
       console.log(order);
       return new Promise((resolve,reject)=>{
@@ -465,6 +516,62 @@ db.get().collection(collections.ADDRESS_COLLECTIONS).insertOne(details).then((re
              console.log(response);
              resolve()
          })
+      })
+  },
+  editProfile:(userId,data)=>{
+      return new Promise((resolve,reject)=>{
+          db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(userId)},{$set:{
+Name:data.Name,Email:data.Email,Phone:data.Phone
+          }}).then((response)=>{
+              resolve()
+          })
+      })
+  },
+  editAddress:(adId,body)=>{
+      return new Promise((resolve,reject)=>{
+          db.get().collection(collections.ADDRESS_COLLECTIONS).updateOne({_id:objectId(adId)},{
+              $set:{
+lname:body.lname,
+fname:body.fname,
+pincode:body.pincode,
+address:body.address,
+town:body.town,
+email:body.email,
+mobile:body.mobile
+              }
+          }).then((response)=>{
+              resolve()
+          })
+      })
+  },
+  getAllCoupon:(userId)=>{
+      return new Promise(async(resolve,reject)=>{
+      let User=await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(userId)})   
+      console.log(User.forRefferal);
+      resolve(User.forRefferal)
+      })
+  },
+  changePassword:(id,oPass,nPass)=>{
+      return new Promise(async(resolve,reject)=>{
+         let user=await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(id)})
+         if(user){
+            bcrypt.compare(oPass,user.Password).then(async(status)=>{
+                console.log(status);
+                if(status){
+               let Password=await bcrypt.hash(nPass,10)
+                    db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(id)},{$set:{Password:Password}}).then(()=>{
+                        resolve()
+                    })
+                    
+                }else{
+                   reject()
+                }
+            }) 
+         }else{
+             reject()
+         }
+      
+
       })
   }
 }

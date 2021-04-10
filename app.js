@@ -7,6 +7,7 @@ var hbs= require('express-handlebars')
 let session=require('express-session')
 var db=require('./config/mongodb')
 var fileUpload=require('express-fileupload')
+const dotenv= require('dotenv').config()
 
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');

@@ -12,9 +12,9 @@
                 {{#each hi.data}}
                 <tr>
                   <th scope="row">
-                    <a href="/removecart/?cartId={{this._id}}&proId={{this.products._id}}">
+                    <p onclick="remove('{{this._id}}','{{this.products._id}}')">
                       <img src="img/icon/close-icon.png" alt="">
-                    </a>
+                    </p>
                   </th>
                   <td>
                     <div class="media">
@@ -53,7 +53,7 @@
                   <th scope="row">
                   </th>
                 </tr>
-                <tr class="last">
+                {{!-- <tr class="last">
                   <th scope="row">
                     <img src="img/icon/cart-icon.png" alt="">
                   </th>
@@ -63,7 +63,7 @@
                         <h5>Cupon code</h5>
                       </div>
                       <div class="media-body">
-                        <input type="text" placeholder="Apply cuopon">
+                        <input id="coupon" type="text" placeholder="Redeem cuopon">
                       </div>
                     </div>
                   </td>
@@ -71,10 +71,10 @@
                     <p class="red"></p>
                   </td>
                   <td>
-                    <h3>update cart</h3>
+                    <h3 onclick="applyCoupon()" class="btn btn-outline-dark">Apply cuopon</h3>
                   </td>
                   <td></td>
-                </tr>
+                </tr> --}}
               </tbody>
             </table>
           </div>
@@ -129,3 +129,25 @@
     </div>
   </div>
 </section>
+<script>
+  function remove(cartId,proId){
+   let choice= confirm("Do You want to delete it");
+   if(choice){
+$.ajax({
+      url:'/remove',
+      data:{
+        cartId,
+        proId
+      },
+      method:'post',
+      success:(response)=>{
+       location.reload()
+      }
+    })
+   }else{
+     location.reload()
+   }
+ 
+  }
+ 
+</script>

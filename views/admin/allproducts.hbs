@@ -28,9 +28,16 @@
               <td class="budget">
                 {{this.product_name}}
               </td>
+              {{#if this.actual_price}}
+              <td class="budget">
+                Rs. {{this.actual_price}}
+              </td>
+              {{else}}
               <td class="budget">
                 Rs. {{this.product_price}}
               </td>
+              {{/if}}
+
               <td class="budget">
                 {{this.product_category}}
               </td>
@@ -57,14 +64,70 @@
                 </div>
               </td>
               <td class="text-right">
-                    <a class="btn btn-primary" href="/admin/editproduct/{{this._id}}">Edit</a>
-                    <a class="btn btn-danger" href="/admin/removeproduct/{{this._id}}">Remove</a>
+
+                <p class="btn btn-default btn-rounded mt-3" data-toggle="modal"
+                  data-target="#modalLoginForm{{this._id}}">Add Offer</p>
+                <a class="btn btn-primary" href="/admin/editproduct/{{this._id}}">Edit</a>
+                <a class="btn btn-danger" href="/admin/removeproduct/{{this._id}}">Remove</a>
               </td>
             </tr>
+<div class="modal fade" id="modalLoginForm{{this._id}}" tabindex="-1" role="dialog"
+                aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <form action="/admin/addOffer" method="POST" id="offer-form">
+                      <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                          <label for="defaultForm-email">Offer In Percentage(.%)</label>
+                          <input type="number" name="offer"  class="form-control validate" >
+                          {{#if this.actual_price}}
+                          <input type="text" hidden value="{{this.actual_price}}" name="price" id="price" >
+                          {{else}}
+                          <input type="text" hidden value="{{this.product_price}}" name="price" id="price">
+                          {{/if}}
+                          <label>Valid From</label>
+                          <input type="date" id="datefrom"  class="form-control" name="ValidFrom"
+                            placeholder="Valid From" onchange="handler(event)">
+                          <label>Valid To</label>
+                          <input type="date" id="datepicker2"  class="form-control" name="ValidTo" placeholder="Valid To"
+                            >
+                          <input type="text" hidden value="{{this._id}}" name="proId" id="proId">
+                          <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" id="subBtn" class="btn btn-default">Add Offer</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
             {{/each}}
+
           </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  $(function () {
+    var dtToday = new Date();
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if (month < 10)
+      month = '0' + month.toString();
+    if (day < 10)
+      day = '0' + day.toString();
+    var maxDate = year + '-' + month + '-' + day;
+    $('#datefrom').attr('min', maxDate);
+  });
+</script>
+ <script>
+    function handler(e) {
+        var first = e.target.value
+        console.log('vanne', first)
+        document.getElementById("datepicker2").min = first
+    }
+</script>

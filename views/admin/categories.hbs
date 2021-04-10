@@ -22,10 +22,38 @@
                                 {{this.product_category}}
                             </td>
                             <td class="text-right">
+                                <p class="btn btn-default btn-rounded mt-3" data-toggle="modal"
+                  data-target="#modalLoginForm{{this._id}}">Add Offer</p>
                                         <a class="btn btn-primary" href="/admin/edit_category/{{this._id}}">Edit</a>
                                         <a class="btn btn-danger" href="/admin/delete_category/{{this._id}}">Remove</a>
                             </td>
+                                    
                         </tr>
+<div class="modal fade" id="modalLoginForm{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <form action="/admin/catOffer" method="POST" id="offer-form">
+                    <div class="modal-body mx-3">
+                      <div class="md-form mb-5">
+                        <label for="defaultForm-email">Offer In Percentage</label>
+                        <input type="number" name="offer" class="form-control validate" required>
+                        <input type="text" hidden value="{{this.product_category}}" name="category" id="price" > 
+                            <label>Valid From</label>
+                          <input type="date" id="hi"class="form-control" name="ValidFrom"
+                            placeholder="Valid From" onchange="handler(event)" required>
+                          <label>Valid To</label>
+                          <input type="date" id="dater" class="form-control" name="ValidTo" placeholder="Valid To"
+                            required>                  
+                        <div class="modal-footer d-flex justify-content-center">
+                          <button type="submit" class="btn btn-default">Add Offer</button>
+                        </div>
+                      </div>
+                    </div> 
+                  </form>
+                </div>
+              </div>
+            </div>
                         {{/each}}
                     </tbody>
                 </table>
@@ -33,4 +61,24 @@
         </div>
     </div>
     </div>
-  
+<script>
+  $(function () {
+    let dtToday = new Date();
+    let month = dtToday.getMonth() + 1;
+    let day = dtToday.getDate();
+    let year = dtToday.getFullYear();
+    if (month < 10)
+      month = '0' + month.toString();
+    if (day < 10)
+      day = '0' + day.toString();
+    let maxDate = year + '-' + month + '-' + day;
+    $('#hi').attr('min', maxDate);
+  });
+</script>
+  <script>
+    function handler(e) {
+        let first = e.target.value
+        console.log('vanne', first)
+        document.getElementById("dater").min = first
+    }
+</script>

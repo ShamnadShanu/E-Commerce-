@@ -12,28 +12,28 @@
 <section>
   <div class="container">
     <div class="row">
-          {{#each address}}
-<div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h6 class="card-title">{{this.pincode}}</h6>
-    <p class="card-text">{{this.address}}</p>
-        <p class="card-text">{{this.mobile}}</p>
+      {{#each address}}
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h6 class="card-title">{{this.pincode}}</h6>
+          <p class="card-text">{{this.address}}</p>
+          <p class="card-text">{{this.mobile}}</p>
 
-        <p class="card-text">{{this.pincode}}</p>
+          <p class="card-text">{{this.pincode}}</p>
 
-    <p onclick="changeaddress('{{this.fname}}','{{this.lname}}','{{this.pincode}}','{{this.address}}','{{this.town}}','{{this.email}}','{{this.mobile}}')"
-    class="btn btn-success">Use </p>
-    <a class="btn btn-danger" href="/removeAddress/{{this._id}}">
-    Remove</a>
-  </div>
-</div>
-            {{/each}}
+          <p onclick="changeaddress('{{this.fname}}','{{this.lname}}','{{this.pincode}}','{{this.address}}','{{this.town}}','{{this.email}}','{{this.mobile}}')"
+            class="btn btn-success">Use </p>
+          <a class="btn btn-danger" href="/removeAddress/{{this._id}}">
+            Remove</a>
+        </div>
+      </div>
+      {{/each}}
 
     </div>
-     <a href="/add-address" class="btn btn-primary mt-5">
+    <a href="/add-address" class="btn btn-primary mt-5">
       Add a new address
     </a>
-  <br>
+    <br>
   </div>
 </section>
 <section class="register_area p_100">
@@ -71,6 +71,8 @@
                     aria-describedby="address" required>
                 </div>
               </div>
+              <input type="text" hidden value="{{total}}" name="total" id="total2">
+
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="ctown">City / Town <span>*</span></label>
@@ -100,10 +102,39 @@
             <div class="payment_list">
               <div class="price_single_cost">
                 {{#each cartItems}}
-                <h5>{{this.products.product_name}} <span>Rs{{this.sub}}</span></h5>
+                <h5>{{this.products.product_name}} <span>Rs.{{this.sub}}</span></h5>
                 {{/each}}
-                <h3><span class="normal_text">Order Totals</span> <span>Rs.{{total}}</span></h3>
+                <h4 id="kitti" style="display: none; color: rgb(12, 223, 47);" class="ml-auto">Copon Applyed
+                  <span>%</span><span id="kittuo"></span></h4>
+                <h3><span class="normal_text">Order Totals</span><span id="total1">{{total}}</span></h3>
               </div>
+              <table>
+                <tr class="last">
+                  <th scope="row">
+                    <img src="img/icon/cart-icon.png" alt="">
+                  </th>
+                  <td>
+                    <div class="media">
+                      <div class="d-flex">
+                      </div>
+                      <div class="media-body">
+                        <p style="color: red; display: none;" id="invCoupon">This coupon code is not valid</p>
+                        <p style="color: rgb(190, 38, 122); display: none;" id="alCoupon">This coupon is already used
+                        </p>
+                        <input id="coupon" name="code" type="text" placeholder="Redeem coupon">
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="red"></p>
+                  </td>
+                  <td>
+                    <h3 onclick="applyCoupon()" class="btn btn-dark">Apply</h3>
+                  </td>
+                  <td></td>
+                </tr>
+              </table>
+
               <h4> <span style="color: rgb(0, 0, 0);">PAYMENT </span></h4>
 
               <div class="payment-method" id="payment">
@@ -133,6 +164,7 @@
               </div>
               <div name="paypal" id="paypal-button-container"> </div>
               <button type="submit" value="submit" class="btn subs_btn form-control">place order</button>
+              <input type="text" hidden name="whichCoupon" id="whichCoupon">
             </div>
           </div>
         </div>
@@ -153,15 +185,58 @@
     document.getElementById('ad-mobile').setAttribute("value", mobile)
   }
 </script>
+<script>
+  function applyCoupon() {
+    console.log('mmmmm')
+    let code = document.getElementById('coupon').value
+    $.ajax({
+      url: '/applyCoupon',
+      data: {
+        code
+      },
+      method: 'post',
+      success: (response) => {
+        console.log(response.success, "signupreward10%")
+        console.log(response.discount, "discount-Admin")
+        console.log(response.err, "error")
+        console.log(response.already, "already used")
+        let actual = document.getElementById('total1').innerHTML
+        console.log(actual)
+        if (response.discount) {
+          console.log('discount vannu')
+          let discount = response.discount
+          document.getElementById('invCoupon').style.display = 'none'
+          document.getElementById('kittuo').innerHTML = discount
+          document.getElementById('kitti').style.display = 'block'
+          document.getElementById('total1').innerHTML = actual - (actual * discount) / 100
+          document.getElementById('total2').value = actual - (actual * discount) / 100
+                    document.getElementById('whichCoupon').value = "admin-discount"
+        } else if (response.success) {
+          document.getElementById('invCoupon').style.display = 'none'
+          document.getElementById('kittuo').innerHTML = "5"
+          document.getElementById('kitti').style.display = 'block'
+          document.getElementById('total1').innerHTML = actual - (actual * 5) / 100
+          document.getElementById('total2').value =actual - (actual * 5) / 100
+                              document.getElementById('whichCoupon').value = "signup-reward"
 
+        } else if (response.err) {
+          document.getElementById('invCoupon').style.display = 'block'
+        } else if (response.already) {
+          document.getElementById('invCoupon').style.display = 'none'
+          document.getElementById('alCoupon').style.display = 'block'
+        } else if (response.forRefferal) {
+          document.getElementById('invCoupon').style.display = 'none'
+          document.getElementById('kittuo').innerHTML = "10"
+          document.getElementById('kitti').style.display = 'block'
+          document.getElementById('total1').innerHTML = actual - (actual * 10) / 100
+          document.getElementById('total2').value = actual - (actual * 10) / 100
+                              document.getElementById('whichCoupon').value = "for-reffering"
 
-
-
-
-
-
-
-
-
-
-
+        } else {
+          document.getElementById('invCoupon').style.display = 'none'
+          document.getElementById('alCoupon').style.display = 'none'
+        }
+      }
+    })
+  }
+</script>

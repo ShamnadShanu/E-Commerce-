@@ -5,6 +5,7 @@ module.exports={
     CATEGORY:"catogoryCollectionss",
    SUBCATEGORY:"subcatogoryCollectionss",
    ORDER_COLLECTIONS:"order",
-   ADDRESS_COLLECTIONS:'address'
+   ADDRESS_COLLECTIONS:'address',
+   COUPON_COLLECTION:"coupons" 
 
 }

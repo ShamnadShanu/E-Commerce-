@@ -18,33 +18,73 @@ function addToCart(proId){
 }
 function change(cartId,proId,userId,count){
   let  quantity=parseInt(document.getElementById(proId).innerHTML)
-  let subtotal=parseInt(document.getElementById(proId+'1').innerHTML)
-  count=parseInt(count)
- $.ajax({
-     url:'/change',
-     data:{
-         user:userId,
-         cart:cartId,
-         product:proId,
-         count:count,
-         quantity:quantity
-     },
-     method:'post',
-     success:(response)=>{
-     if(response.remove){
-         location.reload()
-     }else{
-         console.log(subtotal);
-         document.getElementById(proId).innerHTML=quantity+count
-         document.getElementById('total').innerHTML=response.total
-         document.getElementById('total1').innerHTML=response.total
-         if(count==1){
-     document.getElementById(proId+'1').innerHTML=subtotal+response.pro
+  console.log(quantity)
+  console.log(count)
+  if(quantity==1&&count==-1){
+    let choice= confirm("Do You want to delete it");
+    if(choice){
+      let subtotal=parseInt(document.getElementById(proId+'1').innerHTML)
+      count=parseInt(count)
+     $.ajax({
+         url:'/change',
+         data:{
+             user:userId,
+             cart:cartId,
+             product:proId,
+             count:count,
+             quantity:quantity
+         },
+         method:'post',
+         success:(response)=>{
+         if(response.remove){
+             location.reload()
+         }else{
+             console.log(subtotal);
+             document.getElementById(proId).innerHTML=quantity+count
+             document.getElementById('total').innerHTML=response.total
+             document.getElementById('total1').innerHTML=response.total
+             if(count==1){
+         document.getElementById(proId+'1').innerHTML=subtotal+response.pro
+             }
+             if(count==-1){
+                document.getElementById(proId+'1').innerHTML=subtotal-response.pro
+             }
          }
-         if(count==-1){
-            document.getElementById(proId+'1').innerHTML=subtotal-response.pro
          }
-     }
-     }
- })
+     })
+    }else{
+        location.reload()
+    }
+  }else{
+    let subtotal=parseInt(document.getElementById(proId+'1').innerHTML)
+    count=parseInt(count)
+   $.ajax({
+       url:'/change',
+       data:{
+           user:userId,
+           cart:cartId,
+           product:proId,
+           count:count,
+           quantity:quantity
+       },
+       method:'post',
+       success:(response)=>{
+       if(response.remove){
+           location.reload()
+       }else{
+           console.log(subtotal);
+           document.getElementById(proId).innerHTML=quantity+count
+           document.getElementById('total').innerHTML=response.total
+           document.getElementById('total1').innerHTML=response.total
+           if(count==1){
+       document.getElementById(proId+'1').innerHTML=subtotal+response.pro
+           }
+           if(count==-1){
+              document.getElementById(proId+'1').innerHTML=subtotal-response.pro
+           }
+       }
+       }
+   })
+  }
+  
 }

@@ -2,38 +2,27 @@
     <div class="container">
         <div class="login_inner">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-5">
                     <div class="login_title">
-                        <h2>create account</h2>
+                        <h2>Edit account</h2>
                     </div>
 
-                    <form action="/signup" method="POST" id="Validate" class="login_form row">
+                    <form action="/editUser" method="POST" id="Validate" class="login_form row">
                         <div class="col-lg-12 form-group">
-                            <input class="form-control" name="Name" type="text" placeholder="Name">
+                            <label for="">Name</label>
+                            <input value="{{USER.Name}}" class="form-control" name="Name" type="text" placeholder="Name">
                         </div>
                         <div class="col-lg-12 form-group">
-                            {{#if exist}}
-                            <p style="color: red;">The Email is already taken</p>
-                            {{/if}}
-                            <input class="form-control" name="Email" placeholder="Email">
+                            <label for="">Email</label>
+                            <input value="{{USER.Email}}" class="form-control" name="Email" placeholder="Email">
                         </div>
                         <div class="row col-lg-12">
                             <div class="col-lg-6 form-group ">
-                                <input class="form-control" id="No" name="Phone" type="number" placeholder="Phone">
-                                <p id="already" style="color: red; display: none;">This number is already taken</p>
+                                <label for="">Mobile</label>
+                                <input class="form-control" id="No" value="{{USER.Phone}}" name="Phone" type="number" placeholder="Phone">
                             </div>
                             <div class="col-lg-2 mt-1 ml-auto form-group">
-                                <p onclick="getOtp()" class="btn btn-outline-primary">Get OTP</p>
                             </div>
-                            <div class="col-lg-4 form-group ml-auto" id="otp" style="display: none;">
-                                <input class="form-control" id="kitti" name="otp" type="number" placeholder="OTP">
-                                                            <p style="color: red; display: none;" id="invalid">Invalid OTP</p>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-12 form-group">
-                            <input class="form-control" id="pass" name="Password" type="password"
-                                placeholder="Password">
                         </div>
                         <div class="col-lg-12 form-group">
                             <button type="submit" value="submit" class="btn update_btn form-control">Apply Changes</button>

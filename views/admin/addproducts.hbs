@@ -99,15 +99,17 @@
     </div> --}}
     <!-- File Button -->
     <div class="form-group">
-      <label class="col-md-4 control-label" for="filebutton">Main_image</label>
+      <label class="col-md-4 control-label" for="filebutton">Main_Image</label>
       <div class="col-md-4">
-        <img src="" class="img1Disp" id="Imageview" style="display: none; width: 100px; hight:auto;">
+        <img src="" id="Imageview" class="img1Disp"  style="display: none; width: 100px; hight:auto;" >
         <br>
         <span style="display: none; color:red" id="id"> Please select an image file</span>
+
         <br>
-        <input id="image" name="Image" onclick="firstImage()" onchange="imageview(event); fileValidation('id','image','Imageview');"
-          class="input-file" type="file">
-          <textarea name="base1" hidden id="imageBase64Data1" cols="30" rows="10"></textarea>
+        <input id="IMAGE" name="Image" onclick="firstImage()"
+          onchange="imageview(event); fileValidation('id','IMAGE','Imageview');" class="input-file" type="file">
+        <textarea name="base1" hidden id="imageBase64Data1" cols="30" rows="10"></textarea>
+
       </div>
     </div>
 
@@ -142,7 +144,7 @@
       <!-- Button -->
       <div class="form-group">
         <div class="col-md-4">
-          <button id="image" name="singlebutton" class="btn btn-success">ADD PRODUCT</button>
+          <button id="img" name="singlebutton" class="btn btn-success">ADD PRODUCT</button>
         </div>
       </div>
   </fieldset>
@@ -154,12 +156,12 @@
 
 
 <script>
-    function firstImage() {
+  function firstImage() {
     console.log('clickiyea...')
     let result = document.querySelector('.result'),
       save = document.querySelector('.save'),
       cropped = document.querySelector('.img1Disp'),//imagePreview
-      upload = document.querySelector('#image'),//input Id
+      upload = document.querySelector('#IMAGE'),//input Id
       cropper = '';
     upload.addEventListener('change', (e) => {
       if (e.target.files.length) {
@@ -177,7 +179,13 @@
             // append new image
             result.appendChild(img);
             // init cropper
-            cropper = new Cropper(img);
+            cropper = new Cropper(img, {
+              viewMode: 2,
+              aspectRatio: 5 / 7,
+              autoCropArea: 1,
+              cropBoxResizable: false,
+
+            });
           }
         };
         reader.readAsDataURL(e.target.files[0]);
@@ -199,7 +207,7 @@
     });
   }
 
- 
+
 </script>
 
 <!-- assh script ends -->
@@ -231,8 +239,13 @@
             // append new image
             result.appendChild(img);
             // init cropper
-            cropper = new Cropper(img);
-          }
+ cropper = new Cropper(img, {
+              viewMode: 2,
+              aspectRatio: 5 / 7,
+              autoCropArea: 1,
+              cropBoxResizable: false,
+
+            });          }
         };
         reader.readAsDataURL(e.target.files[0]);
       }
@@ -278,8 +291,13 @@
             // append new image
             result.appendChild(img);
             // init cropper
-            cropper = new Cropper(img);
-          }
+ cropper = new Cropper(img, {
+              viewMode: 2,
+              aspectRatio: 5 / 7,
+              autoCropArea: 1,
+              cropBoxResizable: false,
+
+            });          }
         };
         reader.readAsDataURL(e.target.files[0]);
       }

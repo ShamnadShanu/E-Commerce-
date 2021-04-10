@@ -1,16 +1,15 @@
-const { response } = require('express');
 var express = require('express');
 var router = express.Router();
 let productHelpers = require('../helpers/producthelpers');
-const userHelpers = require('../helpers/userHelpers');
+var userHelpers = require('../helpers/userHelpers');
 const adminHelpers = require('../helpers/adminHelpers')
-const { route } = require('./User');
-const e = require('express');
 const moment = require("moment");
 var base64ToImage = require('base64-to-image');
 
 const collections = require('../config/collections');
 const isImageURL = require('image-url-validator').default;
+const { response } = require('express');
+const { TodayInstance } = require('twilio/lib/rest/api/v2010/account/usage/record/today');
 
 var verifyloggin = (req, res, next) => {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate,must-stale=0,post-check=0,pre-check=0')
@@ -29,6 +28,7 @@ router.get('/', verifyloggin, async (req, res, next) => {
   let Placed = await adminHelpers.getAllplaced()
   let Orders = await adminHelpers.getAllOrders()
   let Users = await adminHelpers.getAlluser()
+  Users=Users.lenght
   res.render('admin/index', { Admin: true, Users, Orders, Placed, Delivered, shipped })
 });
 router.get('/login', (req, res) => {
@@ -41,7 +41,6 @@ router.get('/login', (req, res) => {
 });
 router.post('/login', (req, res) => {
   adminHelpers.doLogin(req.body).then((response) => {
-    console.log(req.body);
     if (response.status) {
       req.session.adminLoggedin = true
       res.redirect('/admin')
@@ -58,13 +57,15 @@ router.get('/allproducts', verifyloggin, function (req, res, next) {
   })
 });
 router.get('/allusers', verifyloggin, (req, res) => {
-  userHelpers.getAlluser().then((Users) => {
-    res.render('admin/allusers', { Admin: true, Users })
+  adminHelpers.getAlluser().then((response) => {
+    let Users=response.User
+    console.log(Users);
+    res.render('admin/allusers', { Admin: true,Users})
   })
 });
 router.get('/addproducts', verifyloggin, (req, res) => {
   if (req.session.wrong) {
-    res.render('admin/addproducts', { wrong: req.session.wrong, Admin: true })
+    res.render('admin/addproducts', {wrong: req.session.wrong, Admin: true })
     req.session.wrong = false
   }
   productHelpers.getAll().then((categories) => {
@@ -74,6 +75,7 @@ router.get('/addproducts', verifyloggin, (req, res) => {
   })
 })
 router.post('/addproducts', (req, res) => {
+  console.log(req.files.Image);
   productHelpers.addproduct(req.body).then(async (id) => {
     
 
@@ -121,6 +123,7 @@ router.get('/removeuser/:id', verifyloggin, (req, res) => {
   userHelpers.removeUser(Data).then(() => {
     res.redirect('/admin/allusers')
   })
+
 });
 router.get('/editproduct/:id', verifyloggin, (req, res) => {
   productHelpers.getOneproduct(req.params.id).then((product) => {
@@ -255,7 +258,7 @@ router.post("/changeStatus", (req, res) => {
 
 
 
-router.get('/Salesreport', async (req, res) => {
+router.get('/Salesreport',verifyloggin, async(req, res) => {
   adminHelpers.allOrders().then(async (data) => {
     var userName = await adminHelpers.getUsername(data)
     console.log(data);
@@ -265,16 +268,55 @@ router.get('/Salesreport', async (req, res) => {
 
   })
 })
-router.post("/salesReport", (req, res) => {
+router.post("/salesReport",verifyloggin, (req, res) => {
   console.log(req.body);
   var start = moment(req.body.start).format("L");
   var end = moment(req.body.end).format("L");
   adminHelpers.salesReport(start, end).then((response) => {
     console.log(response);
-    res.json(response);
-  });
+    let data=response
+res.render('admin/salesReport',{
+  Admin:true,data})  });
 });
+router.post('/addOffer',verifyloggin,(req,res)=>{
+  console.log(req.body);
+  let proId=req.body.proId
+  let offer=parseInt(req.body.offer)
+  let price=parseInt(req.body.price)
+  let fromDate=req.body.ValidFrom
+ let  toDate=req.body.ValidTo
+  adminHelpers.addOffer(proId,offer,price,fromDate,toDate).then(()=>{
+    console.log('jai');
+res.redirect('/admin/allproducts') 
+ })
+});
+router.post('/catOffer',verifyloggin,(req,res)=>{
+  console.log(req.body);
+  let category=req.body.category
+  let offer=parseInt(req.body.offer)
+  let fromDate=req.body.ValidFrom
+ let  toDate=req.body.ValidTo
+  adminHelpers.catOffer(category,offer,fromDate,toDate).then(()=>{
+    console.log('jai');
+res.redirect('/admin/categories') 
+ })
+});
+router.get('/all-coupons',verifyloggin,(req,res)=>{
+  adminHelpers.geAllCoupons().then((response)=>{
+    console.log(response);
+    res.render('admin/allCoupons',{Admin:true,Coupons:response})
 
-
-
+  })
+});
+router.post('/addCoupon',(req,res)=>{
+  let Discount=req.body.Discount
+  adminHelpers.generate(Discount)
+  res.redirect('/admin/all-coupons')
+})
+router.get('/removeCoupon/:id',(req,res)=>{
+  console.log(req.params.id);
+  adminHelpers.removeCoupon(req.params.id).then(()=>{
+    res.redirect("/admin/all-coupons")
+  })
+})
 module.exports = router;

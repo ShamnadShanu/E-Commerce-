@@ -5,7 +5,7 @@ const state={
 module.exports.connect=(done)=>{
 const url='mongodb://localhost:27017'
 const dbname='fs'
-MongoCliend.connect(url,(err,data)=>{
+MongoCliend.connect(process.env.MONGO_CONNECT_URL,(err,data)=>{
     if(err)return done(err)
     state.db=data.db(dbname)
     done()
