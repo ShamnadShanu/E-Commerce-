@@ -320,7 +320,6 @@ router.post('/getOtp', (req, res) => {
     console.log(data);
     if (data) {
       res.json(true)
-
     } else {
       client.verify.services(twlio.serviceSID)
         .verifications
